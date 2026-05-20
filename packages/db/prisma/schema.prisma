@@ -1,0 +1,182 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model AdvertiserVote {
+  id             Int       @id @default(autoincrement())
+  advertiserName String    @map("advertiser_name") @db.VarChar(255)
+  fingerprint    String    @db.VarChar(255)
+  vote           String    @db.VarChar(10)
+  createdAt      DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@unique([advertiserName, fingerprint], map: "advertiser_votes_advertiser_name_fingerprint_key")
+  @@index([advertiserName], map: "idx_advertiser_votes_name")
+  @@map("advertiser_votes")
+}
+
+model Advertiser {
+  advertiserId Int         @id @default(autoincrement()) @map("advertiser_id")
+  name         String      @db.VarChar(255)
+  slug         String?     @unique(map: "advertisers_slug_key") @db.VarChar(255)
+  logoUrl      String?     @map("logo_url")
+  url          String?
+  description  String?
+  isActive     Boolean?    @default(true) @map("is_active")
+  createdAt    DateTime?   @default(now()) @map("created_at")
+  updatedAt    DateTime?   @default(now()) @map("updated_at")
+  healthScore  Int?        @default(50) @map("health_score")
+
+  promotions   Promotion[]
+
+  @@index([isActive], map: "idx_advertisers_active")
+  @@map("advertisers")
+}
+
+model DealHealthVote {
+  id          Int       @id @default(autoincrement())
+  productSlug String    @map("product_slug") @db.VarChar(255)
+  vote        String    @db.VarChar(20)
+  fingerprint String?   @db.VarChar(255)
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([createdAt], map: "idx_deal_health_created_at")
+  @@index([productSlug], map: "idx_deal_health_product_slug")
+  @@map("deal_health_votes")
+}
+
+model Feed {
+  id               Int       @id @default(autoincrement())
+  programId        Int       @unique(map: "feeds_program_id_key") @map("program_id")
+  programName      String    @map("program_name") @db.VarChar(255)
+  catalogId        String?   @map("catalog_id") @db.VarChar(255)
+  catalogName      String?   @map("catalog_name") @db.VarChar(255)
+  httpsLink        String?   @map("https_link")
+  country          String?   @default("US") @db.VarChar(10)
+  totalProducts    Int?      @default(0) @map("total_products")
+  status           String?   @default("pending") @db.VarChar(50)
+  sourceUpdatedAt  DateTime? @map("source_updated_at")
+  lastImportedAt   DateTime? @map("last_imported_at")
+  productsImported Int?      @default(0) @map("products_imported")
+  isActive         Boolean?  @default(true) @map("is_active")
+  createdAt        DateTime? @default(now()) @map("created_at")
+  updatedAt        DateTime? @default(now()) @map("updated_at")
+
+  @@index([country], map: "idx_feeds_country")
+  @@index([programId], map: "idx_feeds_program_id")
+  @@index([status], map: "idx_feeds_status")
+  @@map("feeds")
+}
+
+model Variant {
+  id             Int       @id @default(autoincrement())
+  programId      Int?      @map("program_id")
+  productId      String    @map("product_id")
+  groupId        Int?      @map("group_id")
+  country        String?   @default("US") @db.VarChar(2)
+  currency       String?   @default("USD") @db.VarChar(3)
+  name           String
+  brand          String?
+  description    String?
+  price          Decimal?  @db.Decimal
+  finalPrice     Decimal?  @map("final_price") @db.Decimal
+  discountPct    Int?      @default(0) @map("discount_pct")
+  isOnSale       Boolean?  @default(false) @map("is_on_sale")
+  gender         String?   @db.VarChar(20)
+  category       String?   @db.VarChar(100)
+  subCategory    String?   @map("sub_category") @db.VarChar(100)
+  color          String?
+  size           String?
+  sku            String?
+  url            String?
+  imageUrl       String?   @map("image_url")
+  inStock        Boolean?  @default(true) @map("in_stock")
+  visibility     String?   @default("live") @db.VarChar(20)
+  createdAt      DateTime? @default(now()) @map("created_at")
+  updatedAt      DateTime? @default(now()) @map("updated_at")
+  parentSlug     String?   @map("parent_slug")
+  variantSlug    String?   @map("variant_slug")
+  normalizedName String?   @map("normalized_name")
+  advertiserName String?   @map("advertiser_name") @db.VarChar(255)
+  region         String?   @default("na") @db.VarChar(10)
+
+  group          Product?  @relation("VariantGroup", fields: [groupId], references: [id], onDelete: SetNull)
+  bestFor        Product?  @relation("BestVariant")
+
+  @@unique([programId, productId], map: "variants_program_id_product_id_key")
+  @@index([groupId], map: "idx_variants_group_id")
+  @@map("variants")
+}
+
+model Product {
+  id             Int       @id @default(autoincrement())
+  slug           String    @unique
+  name           String
+  normalizedName String?   @map("normalized_name")
+  brand          String?
+  gender         String?   @db.VarChar(20)
+  category       String?   @db.VarChar(100)
+  subCategory    String?   @map("sub_category") @db.VarChar(100)
+  country        String?   @default("US") @db.VarChar(2)
+  region         String?   @default("na") @db.VarChar(10)
+  bestVariantId  Int?      @unique @map("best_variant_id")
+  bestPrice      Decimal?  @map("best_price") @db.Decimal
+  imageUrl       String?   @map("image_url")
+  url            String?
+  inStock        Boolean?  @default(false) @map("in_stock")
+  isOnSale       Boolean?  @default(false) @map("is_on_sale")
+  discountPct    Int?      @default(0) @map("discount_pct")
+  visibility     String?   @default("pending") @db.VarChar(20)
+  createdAt      DateTime? @default(now()) @map("created_at")
+  updatedAt      DateTime? @default(now()) @map("updated_at")
+
+  variants       Variant[] @relation("VariantGroup")
+  bestVariant    Variant?  @relation("BestVariant", fields: [bestVariantId], references: [id], onDelete: SetNull)
+
+  @@index([visibility, country, gender], map: "idx_products_visibility_country_gender")
+  @@map("products")
+}
+
+model Promotion {
+  id              Int        @id @default(autoincrement())
+  advertiserId    Int?       @map("advertiser_id")
+  title           String     @db.VarChar(500)
+  description     String?
+  couponCode      String?    @map("coupon_code") @db.VarChar(100)
+  discountPercent Decimal?   @map("discount_percent") @db.Decimal(5, 2)
+  discountAmount  Decimal?   @map("discount_amount") @db.Decimal(10, 2)
+  minimumPurchase Decimal?   @map("minimum_purchase") @db.Decimal(10, 2)
+  terms           String?
+  url             String?
+  startDate       DateTime?  @map("start_date")
+  endDate         DateTime?  @map("end_date")
+  isActive        Boolean?   @default(true) @map("is_active")
+  isVerified      Boolean?   @default(false) @map("is_verified")
+  createdAt       DateTime?  @default(now()) @map("created_at")
+  updatedAt       DateTime?  @default(now()) @map("updated_at")
+
+  advertiser      Advertiser? @relation(fields: [advertiserId], references: [advertiserId], onDelete: Cascade)
+
+  @@index([isActive, endDate], map: "idx_promotions_active")
+  @@index([advertiserId], map: "idx_promotions_advertiser")
+  @@map("promotions")
+}
+
+model SyncLog {
+  id            Int      @id @default(autoincrement())
+  runId         String   @map("run_id")
+  startedAt     DateTime @map("started_at") @db.Timestamptz(6)
+  completedAt   DateTime @map("completed_at") @db.Timestamptz(6)
+  durationMs    Int      @map("duration_ms")
+  feedsSynced   Int      @map("feeds_synced")
+  totalImported Int      @map("total_imported")
+  staleHidden   Int      @map("stale_hidden")
+  errors        Json?    @default("[]")
+  results       Json?    @default("{}")
+
+  @@map("sync_log")
+}
