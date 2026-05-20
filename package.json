@@ -1,0 +1,17 @@
+{
+  "name": "shoetopia-core",
+  "private": true,
+  "scripts": {
+    "dev:api": "pnpm --filter @shoetopia/api dev",
+    "dev:admin": "pnpm --filter @shoetopia/admin dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=9"
+  }
+}
