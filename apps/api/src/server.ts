@@ -1,6 +1,7 @@
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
 import redisPlugin from './plugins/redis.js'
+import bullBoardPlugin from './plugins/bull-board.js'
 import { registerRoutes } from './routes/index.js'
 
 const server = Fastify({
@@ -15,6 +16,7 @@ const server = Fastify({
 
 await server.register(cors, { origin: true })
 await server.register(redisPlugin)
+await server.register(bullBoardPlugin)
 
 server.get('/healthz', async () => ({ ok: true }))
 
