@@ -1,6 +1,7 @@
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
 import redisPlugin from './plugins/redis.js'
+import { registerRoutes } from './routes/index.js'
 
 const server = Fastify({
   logger: {
@@ -15,8 +16,9 @@ const server = Fastify({
 await server.register(cors, { origin: true })
 await server.register(redisPlugin)
 
-// Routes registered in later tasks
 server.get('/healthz', async () => ({ ok: true }))
+
+await registerRoutes(server)
 
 const port = Number(process.env.PORT ?? 3001)
 await server.listen({ port, host: '0.0.0.0' })
