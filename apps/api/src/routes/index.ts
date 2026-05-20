@@ -15,6 +15,24 @@ import brandProductsRoute from './brand-products.js'
 import favoritesRoute from './favorites.js'
 import productSlugRoute from './product-slug.js'
 
+// Admin routes
+import statusRoute from './admin/status.js'
+import feedsAdminRoute from './admin/feeds.js'
+import importRoute from './admin/import.js'
+import archiveRoute from './admin/archive.js'
+import housekeepingRoute from './admin/housekeeping.js'
+import jobsRoute from './admin/jobs.js'
+import syncLogRoute from './admin/sync-log.js'
+import clearCacheRoute from './admin/clear-cache.js'
+import performanceStatsRoute from './admin/performance-stats.js'
+import renormalizeRoute from './admin/renormalize.js'
+import reprocessRoute from './admin/reprocess.js'
+import fixCategoriesRoute from './admin/fix-categories.js'
+import priceDiagRoute from './admin/price-diag.js'
+
+// Cron routes
+import dailySyncRoute from './cron/daily-sync.js'
+
 export async function registerRoutes(fastify: FastifyInstance): Promise<void> {
   await fastify.register(productsRoute)
   await fastify.register(searchRoute)
@@ -31,4 +49,22 @@ export async function registerRoutes(fastify: FastifyInstance): Promise<void> {
   await fastify.register(brandProductsRoute)
   await fastify.register(favoritesRoute)
   await fastify.register(productSlugRoute)
+
+  // Admin routes
+  await fastify.register(statusRoute)
+  await fastify.register(feedsAdminRoute)
+  await fastify.register(importRoute)
+  await fastify.register(archiveRoute)
+  await fastify.register(housekeepingRoute)
+  await fastify.register(jobsRoute)
+  await fastify.register(syncLogRoute)
+  await fastify.register(clearCacheRoute)
+  await fastify.register(performanceStatsRoute)
+  await fastify.register(renormalizeRoute)
+  await fastify.register(reprocessRoute)
+  await fastify.register(fixCategoriesRoute)
+  await fastify.register(priceDiagRoute)
+
+  // Cron routes
+  await fastify.register(dailySyncRoute)
 }
