@@ -1,10 +1,15 @@
 import type { FastifyPluginAsync } from 'fastify'
 import { requireApiSecret } from '../../plugins/auth.js'
 import { importFeedById } from '../../lib/import-feed.js'
-import { FEEDS } from '../../lib/feeds.js'
+import { prisma } from '@shoetopia/db'
 
 const importRoute: FastifyPluginAsync = async (fastify) => {
   fastify.get('/api/admin/run-pipeline', { preHandler: requireApiSecret }, async (_request, reply) => {
+    const feeds = await prisma.feed.findMany({
+      where: { isActive: true },
+      select: { programId: true, programName: true },
+      orderBy: { programName: 'asc' },
+    })
     return reply.send({
       usage: 'POST /api/admin/run-pipeline',
       actions: [
@@ -12,7 +17,7 @@ const importRoute: FastifyPluginAsync = async (fastify) => {
         { action: 'import-all', description: 'Import all feeds' },
         { action: 'full', description: 'Import all feeds (quality runs as part of daily sync)' },
       ],
-      feeds: FEEDS.map(f => ({ id: f.id, name: f.name })),
+      feeds: feeds.map(f => ({ id: f.programId, name: f.programName })),
     })
   })
 
@@ -31,36 +36,40 @@ const importRoute: FastifyPluginAsync = async (fastify) => {
 
         // ACTION: Import single feed
         if (action === 'import' && feedId) {
-          const feed = FEEDS.find(f => f.id === feedId)
+          const feed = await prisma.feed.findUnique({ where: { programId: feedId }, select: { programName: true } })
           if (!feed) {
             return reply.code(404).send({ error: `Feed ${feedId} not found` })
           }
-
-          fastify.log.info(`[run-pipeline] Importing feed: ${feed.name}`)
+          fastify.log.info(`[run-pipeline] Importing feed: ${feed.programName}`)
           const importData = await importFeedById(feedId)
-          results.steps.push({ step: 'import', feedName: feed.name, ...importData })
+          results.steps.push({ step: 'import', feedName: feed.programName, ...importData })
         }
 
         // ACTION: Import all feeds
         if (action === 'import-all' || action === 'full') {
-          fastify.log.info(`[run-pipeline] Importing all ${FEEDS.length} feeds...`)
+          const allFeeds = await prisma.feed.findMany({
+            where: { isActive: true },
+            select: { programId: true, programName: true },
+            orderBy: { programName: 'asc' },
+          })
+          fastify.log.info(`[run-pipeline] Importing all ${allFeeds.length} feeds...`)
 
-          for (const feed of FEEDS) {
+          for (const feed of allFeeds) {
             try {
-              fastify.log.info(`[run-pipeline] Importing: ${feed.name}`)
-              const importData = await importFeedById(feed.id)
+              fastify.log.info(`[run-pipeline] Importing: ${feed.programName}`)
+              const importData = await importFeedById(feed.programId)
               results.steps.push({
                 step: 'import',
-                feedName: feed.name,
-                feedId: feed.id,
+                feedName: feed.programName,
+                feedId: feed.programId,
                 imported: importData.imported,
                 stats: importData.stats,
               })
             } catch (err: any) {
               results.steps.push({
                 step: 'import',
-                feed: feed.name,
-                feedId: feed.id,
+                feed: feed.programName,
+                feedId: feed.programId,
                 success: false,
                 error: err.message,
               })
