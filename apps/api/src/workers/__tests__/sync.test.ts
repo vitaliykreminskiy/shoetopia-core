@@ -1,7 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-vi.mock('../../lib/feeds.js', () => ({
-  FEEDS: [{ id: 1, name: 'Nike' }],
+vi.mock('@shoetopia/db', () => ({
+  prisma: {
+    feed: {
+      findMany: vi.fn().mockResolvedValue([
+        { programId: 1, programName: 'Nike' },
+      ]),
+    },
+  },
 }))
 
 vi.mock('../../queues/index.js', () => ({
