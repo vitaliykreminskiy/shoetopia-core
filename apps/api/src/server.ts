@@ -1,35 +1,44 @@
-import Fastify from 'fastify'
-import cors from '@fastify/cors'
-import redisPlugin from './plugins/redis.js'
-import bullBoardPlugin from './plugins/bull-board.js'
-import { registerRoutes } from './routes/index.js'
+import Fastify from "fastify";
+import cors from "@fastify/cors";
+import redisPlugin from "./plugins/redis.js";
+import bullBoardPlugin from "./plugins/bull-board.js";
+import { registerRoutes } from "./routes/index.js";
+import { prisma } from "@shoetopia/db";
 
 const server = Fastify({
   logger: {
-    level: process.env.LOG_LEVEL ?? 'info',
+    level: process.env.LOG_LEVEL ?? "info",
     transport:
-      process.env.NODE_ENV === 'development'
-        ? { target: 'pino-pretty' }
+      process.env.NODE_ENV === "development"
+        ? { target: "pino-pretty" }
         : undefined,
   },
-})
+});
 
-await server.register(cors, { origin: true })
-await server.register(redisPlugin)
-await server.register(bullBoardPlugin)
+await server.register(cors, { origin: true });
+await server.register(redisPlugin);
+await server.register(bullBoardPlugin);
 
-server.get('/healthz', async () => ({ ok: true }))
+server.get("/health", async () => ({ ok: true }));
 
-await registerRoutes(server)
+await registerRoutes(server);
 
-const port = Number(process.env.PORT ?? 3001)
-await server.listen({ port, host: '0.0.0.0' })
-server.log.info(`API listening on port ${port}`)
+const port = Number(process.env.PORT ?? 3001);
+await server.listen({ port, host: "0.0.0.0" });
+server.log.info(`API listening on port ${port}`);
+
+try {
+  await prisma.$queryRaw`SELECT 1`;
+  server.log.info("[db] connected");
+} catch (err: any) {
+  server.log.error(`[db] connection failed: ${err.message}`);
+}
 
 // Start BullMQ workers (skip in test environment)
-if (process.env.NODE_ENV !== 'test') {
-  const { feedImportWorker } = await import('./workers/feed-import.worker.js')
-  const { housekeepingWorker } = await import('./workers/housekeeping.worker.js')
-  const { syncWorker } = await import('./workers/sync.worker.js')
-  server.log.info('[workers] feed-import, housekeeping, sync workers started')
+if (process.env.NODE_ENV !== "test") {
+  const { feedImportWorker } = await import("./workers/feed-import.worker.js");
+  const { housekeepingWorker } =
+    await import("./workers/housekeeping.worker.js");
+  const { syncWorker } = await import("./workers/sync.worker.js");
+  server.log.info("[workers] feed-import, housekeeping, sync workers started");
 }

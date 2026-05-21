@@ -1,0 +1,58 @@
+<h2>Дизайн: файлова структура</h2>
+<p class="subtitle">Секція 1 з 3 — що куди переїжджає</p>
+
+<div class="section">
+  <h3>Нова структура</h3>
+  <div class="mockup">
+    <div class="mockup-header">apps/admin/app/admin/</div>
+    <div class="mockup-body" style="font-family:monospace;font-size:13px;line-height:1.8">
+      <div style="color:#6ee7b7">layout.tsx</div>
+      <div style="color:#93c5fd;padding-left:16px">↳ nav-strip зверху + таб-навігація (переїжджає сюди з page.tsx)</div>
+      <br>
+      <div style="color:#6ee7b7">page.tsx</div>
+      <div style="color:#93c5fd;padding-left:16px">↳ redirect → /admin/status</div>
+      <br>
+      <div style="color:#fbbf24">status/page.tsx</div>
+      <div style="color:#93c5fd;padding-left:16px">↳ Daily Sync, статистика, feed status таблиця</div>
+      <br>
+      <div style="color:#fbbf24">feeds/page.tsx</div>
+      <div style="color:#93c5fd;padding-left:16px">↳ Upload CSV, таблиця advertisers</div>
+      <br>
+      <div style="color:#fbbf24">import/page.tsx</div>
+      <div style="color:#93c5fd;padding-left:16px">↳ Import по фідах, batch import, CSV upload</div>
+      <br>
+      <div style="color:#fbbf24">products/page.tsx</div>
+      <div style="color:#93c5fd;padding-left:16px">↳ Grouping, Categorization, Fix slugs, Normalize IDs</div>
+      <br>
+      <div style="color:#fbbf24">archive/page.tsx</div>
+      <div style="color:#93c5fd;padding-left:16px">↳ Список archived продуктів, restore</div>
+      <br>
+      <div style="color:#fbbf24">performance/page.tsx</div>
+      <div style="color:#93c5fd;padding-left:16px">↳ DB stats, indexes</div>
+      <br>
+      <div style="color:#fbbf24">grouping/page.tsx</div>
+      <div style="color:#93c5fd;padding-left:16px">↳ Renormalize, Preview/Apply/Rebuild</div>
+      <br>
+      <div style="color:#fbbf24">jobs/page.tsx</div>
+      <div style="color:#93c5fd;padding-left:16px">↳ JobsTab (вже окремий компонент)</div>
+      <br>
+      <div style="color:#f87171;text-decoration:line-through">pipeline/page.tsx</div>
+      <div style="color:#f87171;padding-left:16px">↳ видалити</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>layout.tsx — що змінюється</h3>
+  <p>Поточний layout.tsx має тільки top nav-strip. Додаємо таб-навігацію одразу під ним — <code>&lt;Link href="/admin/feeds"&gt;</code> і т.д. Активний таб визначається через <code>usePathname()</code>.</p>
+  <div class="mockup">
+    <div class="mockup-header">layout.tsx структура</div>
+    <div class="mockup-body" style="font-family:monospace;font-size:12px;line-height:1.8">
+      <div><span style="color:#888">// existing</span></div>
+      <div style="color:#6ee7b7">&lt;nav&gt; Shoetopia Admin | Feed Explorer | ← Back &lt;/nav&gt;</div>
+      <div><span style="color:#888">// new</span></div>
+      <div style="color:#fbbf24">&lt;TabNav&gt; Status | Feeds | Import | Products | Archive | Perf | Grouping | Jobs &lt;/TabNav&gt;</div>
+      <div style="color:#93c5fd">&lt;main&gt;{children}&lt;/main&gt;</div>
+    </div>
+  </div>
+</div>

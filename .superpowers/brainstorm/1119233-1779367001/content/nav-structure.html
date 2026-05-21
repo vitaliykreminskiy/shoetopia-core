@@ -1,0 +1,85 @@
+<h2>Як має виглядати навігація між табами?</h2>
+<p class="subtitle">Зараз всі 8 табів — один файл 2600+ рядків. Куди переїде навігаційна смуга?</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Sidebar (вертикальна бокова панель)</h3>
+      <p>Ліворуч фіксований sidebar з іконками та назвами табів. Основний контент займає решту ширини. Схоже на Vercel, Linear, Supabase admin.</p>
+      <div class="mockup" style="margin-top:12px">
+        <div class="mockup-header">Mockup</div>
+        <div class="mockup-body" style="display:flex;gap:0;padding:0;min-height:160px">
+          <div style="width:140px;background:#1a1a2e;padding:12px;border-right:1px solid #333;flex-shrink:0">
+            <div style="font-size:11px;color:#888;margin-bottom:8px;text-transform:uppercase">Admin</div>
+            <div style="background:#3b82f6;color:#fff;padding:6px 10px;border-radius:4px;font-size:12px;margin-bottom:4px">📊 Status</div>
+            <div style="color:#aaa;padding:6px 10px;font-size:12px;margin-bottom:4px">📦 Feeds</div>
+            <div style="color:#aaa;padding:6px 10px;font-size:12px;margin-bottom:4px">⬇️ Import</div>
+            <div style="color:#aaa;padding:6px 10px;font-size:12px;margin-bottom:4px">📁 Products</div>
+            <div style="color:#aaa;padding:6px 10px;font-size:12px;margin-bottom:4px">🗄️ Archive</div>
+            <div style="color:#aaa;padding:6px 10px;font-size:12px;margin-bottom:4px">⚡ Perf</div>
+            <div style="color:#aaa;padding:6px 10px;font-size:12px;margin-bottom:4px">🔧 Grouping</div>
+            <div style="color:#aaa;padding:6px 10px;font-size:12px">⚙️ Jobs</div>
+          </div>
+          <div style="flex:1;padding:16px;background:#0d0d0d">
+            <div style="color:#fff;font-size:14px;font-weight:600;margin-bottom:8px">Status</div>
+            <div style="background:#1a1a1a;border-radius:4px;height:100px;display:flex;align-items:center;justify-content:center;color:#555;font-size:12px">page content</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Top tabs (горизонтальна смуга під хедером)</h3>
+      <p>Таби у рядок під існуючим nav-strip з layout.tsx. Схоже на поточний UX, але тепер кожен таб — окрема URL. Зберігає звичний вигляд.</p>
+      <div class="mockup" style="margin-top:12px">
+        <div class="mockup-header">Mockup</div>
+        <div class="mockup-body" style="padding:0;min-height:160px">
+          <div style="background:#111;padding:8px 16px;border-bottom:1px solid #333;display:flex;gap:4px">
+            <div style="background:#3b82f6;color:#fff;padding:6px 14px;border-radius:4px;font-size:12px">Status</div>
+            <div style="color:#888;padding:6px 14px;font-size:12px">Feeds</div>
+            <div style="color:#888;padding:6px 14px;font-size:12px">Import</div>
+            <div style="color:#888;padding:6px 14px;font-size:12px">Products</div>
+            <div style="color:#888;padding:6px 14px;font-size:12px">Archive</div>
+            <div style="color:#888;padding:6px 14px;font-size:12px">Perf</div>
+            <div style="color:#888;padding:6px 14px;font-size:12px">Grouping</div>
+            <div style="color:#888;padding:6px 14px;font-size:12px">Jobs</div>
+          </div>
+          <div style="padding:16px;background:#0d0d0d">
+            <div style="color:#fff;font-size:14px;font-weight:600;margin-bottom:8px">Status</div>
+            <div style="background:#1a1a1a;border-radius:4px;height:100px;display:flex;align-items:center;justify-content:center;color:#555;font-size:12px">page content</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Без окремої навігації — тільки URL</h3>
+      <p>Кожна сторінка самодостатня, перехід між ними — через breadcrumb або кнопки "назад". Мінімалістично, без постійної навігаційної панелі.</p>
+      <div class="mockup" style="margin-top:12px">
+        <div class="mockup-header">Mockup</div>
+        <div class="mockup-body" style="padding:0;min-height:160px">
+          <div style="background:#111;padding:8px 16px;border-bottom:1px solid #333;display:flex;align-items:center;gap:8px">
+            <span style="color:#888;font-size:12px">Admin</span>
+            <span style="color:#555;font-size:12px">/</span>
+            <span style="color:#fff;font-size:12px">Status</span>
+          </div>
+          <div style="padding:16px;background:#0d0d0d">
+            <div style="color:#fff;font-size:14px;font-weight:600;margin-bottom:8px">Status</div>
+            <div style="background:#1a1a1a;border-radius:4px;height:100px;display:flex;align-items:center;justify-content:center;color:#555;font-size:12px">page content</div>
+            <div style="margin-top:12px;display:flex;gap:8px">
+              <div style="background:#1f2937;color:#aaa;padding:4px 10px;border-radius:4px;font-size:11px">→ Feeds</div>
+              <div style="background:#1f2937;color:#aaa;padding:4px 10px;border-radius:4px;font-size:11px">→ Import</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

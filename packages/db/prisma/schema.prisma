@@ -20,18 +20,18 @@ model AdvertiserVote {
 }
 
 model Advertiser {
-  advertiserId Int         @id @default(autoincrement()) @map("advertiser_id")
-  name         String      @db.VarChar(255)
-  slug         String?     @unique(map: "advertisers_slug_key") @db.VarChar(255)
-  logoUrl      String?     @map("logo_url")
+  advertiserId Int       @id @default(autoincrement()) @map("advertiser_id")
+  name         String    @db.VarChar(255)
+  slug         String?   @unique(map: "advertisers_slug_key") @db.VarChar(255)
+  logoUrl      String?   @map("logo_url")
   url          String?
   description  String?
-  isActive     Boolean?    @default(true) @map("is_active")
-  createdAt    DateTime?   @default(now()) @map("created_at")
-  updatedAt    DateTime?   @default(now()) @map("updated_at")
-  healthScore  Int?        @default(50) @map("health_score")
+  isActive     Boolean?  @default(true) @map("is_active")
+  createdAt    DateTime? @default(now()) @map("created_at")
+  updatedAt    DateTime? @default(now()) @map("updated_at")
+  healthScore  Int?      @default(50) @map("health_score")
 
-  promotions   Promotion[]
+  promotions Promotion[]
 
   @@index([isActive], map: "idx_advertisers_active")
   @@map("advertisers")
@@ -104,8 +104,8 @@ model Variant {
   advertiserName String?   @map("advertiser_name") @db.VarChar(255)
   region         String?   @default("na") @db.VarChar(10)
 
-  group          Product?  @relation("VariantGroup", fields: [groupId], references: [id], onDelete: SetNull)
-  bestFor        Product?  @relation("BestVariant")
+  group   Product? @relation("VariantGroup", fields: [groupId], references: [id], onDelete: SetNull)
+  bestFor Product? @relation("BestVariant")
 
   @@unique([programId, productId], map: "variants_program_id_product_id_key")
   @@index([groupId], map: "idx_variants_group_id")
@@ -134,32 +134,32 @@ model Product {
   createdAt      DateTime? @default(now()) @map("created_at")
   updatedAt      DateTime? @default(now()) @map("updated_at")
 
-  variants       Variant[] @relation("VariantGroup")
-  bestVariant    Variant?  @relation("BestVariant", fields: [bestVariantId], references: [id], onDelete: SetNull)
+  variants    Variant[] @relation("VariantGroup")
+  bestVariant Variant?  @relation("BestVariant", fields: [bestVariantId], references: [id], onDelete: SetNull)
 
   @@index([visibility, country, gender], map: "idx_products_visibility_country_gender")
   @@map("products")
 }
 
 model Promotion {
-  id              Int        @id @default(autoincrement())
-  advertiserId    Int?       @map("advertiser_id")
-  title           String     @db.VarChar(500)
+  id              Int       @id @default(autoincrement())
+  advertiserId    Int?      @map("advertiser_id")
+  title           String    @db.VarChar(500)
   description     String?
-  couponCode      String?    @map("coupon_code") @db.VarChar(100)
-  discountPercent Decimal?   @map("discount_percent") @db.Decimal(5, 2)
-  discountAmount  Decimal?   @map("discount_amount") @db.Decimal(10, 2)
-  minimumPurchase Decimal?   @map("minimum_purchase") @db.Decimal(10, 2)
+  couponCode      String?   @map("coupon_code") @db.VarChar(100)
+  discountPercent Decimal?  @map("discount_percent") @db.Decimal(5, 2)
+  discountAmount  Decimal?  @map("discount_amount") @db.Decimal(10, 2)
+  minimumPurchase Decimal?  @map("minimum_purchase") @db.Decimal(10, 2)
   terms           String?
   url             String?
-  startDate       DateTime?  @map("start_date")
-  endDate         DateTime?  @map("end_date")
-  isActive        Boolean?   @default(true) @map("is_active")
-  isVerified      Boolean?   @default(false) @map("is_verified")
-  createdAt       DateTime?  @default(now()) @map("created_at")
-  updatedAt       DateTime?  @default(now()) @map("updated_at")
+  startDate       DateTime? @map("start_date")
+  endDate         DateTime? @map("end_date")
+  isActive        Boolean?  @default(true) @map("is_active")
+  isVerified      Boolean?  @default(false) @map("is_verified")
+  createdAt       DateTime? @default(now()) @map("created_at")
+  updatedAt       DateTime? @default(now()) @map("updated_at")
 
-  advertiser      Advertiser? @relation(fields: [advertiserId], references: [advertiserId], onDelete: Cascade)
+  advertiser Advertiser? @relation(fields: [advertiserId], references: [advertiserId], onDelete: Cascade)
 
   @@index([isActive, endDate], map: "idx_promotions_active")
   @@index([advertiserId], map: "idx_promotions_advertiser")
