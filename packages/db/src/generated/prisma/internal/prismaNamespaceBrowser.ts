@@ -123,6 +123,7 @@ export const FeedScalarFieldEnum = {
   catalogName: 'catalogName',
   httpsLink: 'httpsLink',
   country: 'country',
+  region: 'region',
   totalProducts: 'totalProducts',
   status: 'status',
   sourceUpdatedAt: 'sourceUpdatedAt',

@@ -57,6 +57,7 @@ model Feed {
   catalogName      String?   @map("catalog_name") @db.VarChar(255)
   httpsLink        String?   @map("https_link")
   country          String?   @default("US") @db.VarChar(10)
+  region           String?   @default("na") @db.VarChar(10)
   totalProducts    Int?      @default(0) @map("total_products")
   status           String?   @default("pending") @db.VarChar(50)
   sourceUpdatedAt  DateTime? @map("source_updated_at")

@@ -48,6 +48,7 @@ export type FeedMinAggregateOutputType = {
   catalogName: string | null
   httpsLink: string | null
   country: string | null
+  region: string | null
   totalProducts: number | null
   status: string | null
   sourceUpdatedAt: Date | null
@@ -66,6 +67,7 @@ export type FeedMaxAggregateOutputType = {
   catalogName: string | null
   httpsLink: string | null
   country: string | null
+  region: string | null
   totalProducts: number | null
   status: string | null
   sourceUpdatedAt: Date | null
@@ -84,6 +86,7 @@ export type FeedCountAggregateOutputType = {
   catalogName: number
   httpsLink: number
   country: number
+  region: number
   totalProducts: number
   status: number
   sourceUpdatedAt: number
@@ -118,6 +121,7 @@ export type FeedMinAggregateInputType = {
   catalogName?: true
   httpsLink?: true
   country?: true
+  region?: true
   totalProducts?: true
   status?: true
   sourceUpdatedAt?: true
@@ -136,6 +140,7 @@ export type FeedMaxAggregateInputType = {
   catalogName?: true
   httpsLink?: true
   country?: true
+  region?: true
   totalProducts?: true
   status?: true
   sourceUpdatedAt?: true
@@ -154,6 +159,7 @@ export type FeedCountAggregateInputType = {
   catalogName?: true
   httpsLink?: true
   country?: true
+  region?: true
   totalProducts?: true
   status?: true
   sourceUpdatedAt?: true
@@ -259,6 +265,7 @@ export type FeedGroupByOutputType = {
   catalogName: string | null
   httpsLink: string | null
   country: string | null
+  region: string | null
   totalProducts: number | null
   status: string | null
   sourceUpdatedAt: Date | null
@@ -300,6 +307,7 @@ export type FeedWhereInput = {
   catalogName?: Prisma.StringNullableFilter<"Feed"> | string | null
   httpsLink?: Prisma.StringNullableFilter<"Feed"> | string | null
   country?: Prisma.StringNullableFilter<"Feed"> | string | null
+  region?: Prisma.StringNullableFilter<"Feed"> | string | null
   totalProducts?: Prisma.IntNullableFilter<"Feed"> | number | null
   status?: Prisma.StringNullableFilter<"Feed"> | string | null
   sourceUpdatedAt?: Prisma.DateTimeNullableFilter<"Feed"> | Date | string | null
@@ -318,6 +326,7 @@ export type FeedOrderByWithRelationInput = {
   catalogName?: Prisma.SortOrderInput | Prisma.SortOrder
   httpsLink?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
+  region?: Prisma.SortOrderInput | Prisma.SortOrder
   totalProducts?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -339,6 +348,7 @@ export type FeedWhereUniqueInput = Prisma.AtLeast<{
   catalogName?: Prisma.StringNullableFilter<"Feed"> | string | null
   httpsLink?: Prisma.StringNullableFilter<"Feed"> | string | null
   country?: Prisma.StringNullableFilter<"Feed"> | string | null
+  region?: Prisma.StringNullableFilter<"Feed"> | string | null
   totalProducts?: Prisma.IntNullableFilter<"Feed"> | number | null
   status?: Prisma.StringNullableFilter<"Feed"> | string | null
   sourceUpdatedAt?: Prisma.DateTimeNullableFilter<"Feed"> | Date | string | null
@@ -357,6 +367,7 @@ export type FeedOrderByWithAggregationInput = {
   catalogName?: Prisma.SortOrderInput | Prisma.SortOrder
   httpsLink?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
+  region?: Prisma.SortOrderInput | Prisma.SortOrder
   totalProducts?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -383,6 +394,7 @@ export type FeedScalarWhereWithAggregatesInput = {
   catalogName?: Prisma.StringNullableWithAggregatesFilter<"Feed"> | string | null
   httpsLink?: Prisma.StringNullableWithAggregatesFilter<"Feed"> | string | null
   country?: Prisma.StringNullableWithAggregatesFilter<"Feed"> | string | null
+  region?: Prisma.StringNullableWithAggregatesFilter<"Feed"> | string | null
   totalProducts?: Prisma.IntNullableWithAggregatesFilter<"Feed"> | number | null
   status?: Prisma.StringNullableWithAggregatesFilter<"Feed"> | string | null
   sourceUpdatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Feed"> | Date | string | null
@@ -400,6 +412,7 @@ export type FeedCreateInput = {
   catalogName?: string | null
   httpsLink?: string | null
   country?: string | null
+  region?: string | null
   totalProducts?: number | null
   status?: string | null
   sourceUpdatedAt?: Date | string | null
@@ -418,6 +431,7 @@ export type FeedUncheckedCreateInput = {
   catalogName?: string | null
   httpsLink?: string | null
   country?: string | null
+  region?: string | null
   totalProducts?: number | null
   status?: string | null
   sourceUpdatedAt?: Date | string | null
@@ -435,6 +449,7 @@ export type FeedUpdateInput = {
   catalogName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   httpsLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalProducts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -453,6 +468,7 @@ export type FeedUncheckedUpdateInput = {
   catalogName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   httpsLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalProducts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -471,6 +487,7 @@ export type FeedCreateManyInput = {
   catalogName?: string | null
   httpsLink?: string | null
   country?: string | null
+  region?: string | null
   totalProducts?: number | null
   status?: string | null
   sourceUpdatedAt?: Date | string | null
@@ -488,6 +505,7 @@ export type FeedUpdateManyMutationInput = {
   catalogName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   httpsLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalProducts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -506,6 +524,7 @@ export type FeedUncheckedUpdateManyInput = {
   catalogName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   httpsLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  region?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   totalProducts?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   status?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -524,6 +543,7 @@ export type FeedCountOrderByAggregateInput = {
   catalogName?: Prisma.SortOrder
   httpsLink?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  region?: Prisma.SortOrder
   totalProducts?: Prisma.SortOrder
   status?: Prisma.SortOrder
   sourceUpdatedAt?: Prisma.SortOrder
@@ -549,6 +569,7 @@ export type FeedMaxOrderByAggregateInput = {
   catalogName?: Prisma.SortOrder
   httpsLink?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  region?: Prisma.SortOrder
   totalProducts?: Prisma.SortOrder
   status?: Prisma.SortOrder
   sourceUpdatedAt?: Prisma.SortOrder
@@ -567,6 +588,7 @@ export type FeedMinOrderByAggregateInput = {
   catalogName?: Prisma.SortOrder
   httpsLink?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  region?: Prisma.SortOrder
   totalProducts?: Prisma.SortOrder
   status?: Prisma.SortOrder
   sourceUpdatedAt?: Prisma.SortOrder
@@ -594,6 +616,7 @@ export type FeedSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   catalogName?: boolean
   httpsLink?: boolean
   country?: boolean
+  region?: boolean
   totalProducts?: boolean
   status?: boolean
   sourceUpdatedAt?: boolean
@@ -612,6 +635,7 @@ export type FeedSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   catalogName?: boolean
   httpsLink?: boolean
   country?: boolean
+  region?: boolean
   totalProducts?: boolean
   status?: boolean
   sourceUpdatedAt?: boolean
@@ -630,6 +654,7 @@ export type FeedSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   catalogName?: boolean
   httpsLink?: boolean
   country?: boolean
+  region?: boolean
   totalProducts?: boolean
   status?: boolean
   sourceUpdatedAt?: boolean
@@ -648,6 +673,7 @@ export type FeedSelectScalar = {
   catalogName?: boolean
   httpsLink?: boolean
   country?: boolean
+  region?: boolean
   totalProducts?: boolean
   status?: boolean
   sourceUpdatedAt?: boolean
@@ -658,7 +684,7 @@ export type FeedSelectScalar = {
   updatedAt?: boolean
 }
 
-export type FeedOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "programId" | "programName" | "catalogId" | "catalogName" | "httpsLink" | "country" | "totalProducts" | "status" | "sourceUpdatedAt" | "lastImportedAt" | "productsImported" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["feed"]>
+export type FeedOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "programId" | "programName" | "catalogId" | "catalogName" | "httpsLink" | "country" | "region" | "totalProducts" | "status" | "sourceUpdatedAt" | "lastImportedAt" | "productsImported" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["feed"]>
 
 export type $FeedPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Feed"
@@ -671,6 +697,7 @@ export type $FeedPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     catalogName: string | null
     httpsLink: string | null
     country: string | null
+    region: string | null
     totalProducts: number | null
     status: string | null
     sourceUpdatedAt: Date | null
@@ -1109,6 +1136,7 @@ export interface FeedFieldRefs {
   readonly catalogName: Prisma.FieldRef<"Feed", 'String'>
   readonly httpsLink: Prisma.FieldRef<"Feed", 'String'>
   readonly country: Prisma.FieldRef<"Feed", 'String'>
+  readonly region: Prisma.FieldRef<"Feed", 'String'>
   readonly totalProducts: Prisma.FieldRef<"Feed", 'Int'>
   readonly status: Prisma.FieldRef<"Feed", 'String'>
   readonly sourceUpdatedAt: Prisma.FieldRef<"Feed", 'DateTime'>
