@@ -1,7 +1,7 @@
 import { Worker, QueueEvents, type Job } from 'bullmq'
 import { connection } from '../queues/connection.js'
 import { feedImportQueue } from '../queues/index.js'
-import { FEEDS } from '../lib/feeds.js'
+import { prisma } from '@shoetopia/db'
 import {
   hideStaleProducts,
   upsertGroups,
@@ -19,13 +19,18 @@ export interface SyncJobData {
 
 export async function runDailySync(data: SyncJobData): Promise<void> {
   const { runId, runStartedAt } = data
-  console.log(`[sync] Run ${runId}: launching ${FEEDS.length} feed imports`)
+  const feeds = await prisma.feed.findMany({
+    where: { isActive: true },
+    select: { programId: true, programName: true },
+  })
+
+  console.log(`[sync] Run ${runId}: launching ${feeds.length} feed imports`)
 
   const jobs = await Promise.all(
-    FEEDS.map(feed =>
+    feeds.map(feed =>
       feedImportQueue.add(
         'import-feed',
-        { feedId: feed.id, feedName: feed.name, runStartedAt },
+        { feedId: feed.programId, feedName: feed.programName, runStartedAt },
         { attempts: 3, backoff: { type: 'exponential', delay: 10_000 } },
       )
     )
