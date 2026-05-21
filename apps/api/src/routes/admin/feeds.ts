@@ -26,12 +26,25 @@ const feedsAdminRoute: FastifyPluginAsync = async (fastify) => {
   fastify.get('/api/admin/import-feeds', { preHandler: requireApiSecret }, async (_request, reply) => {
     try {
       const [feeds, stats] = await Promise.all([
-        prisma.feed.findMany({
-          orderBy: [
-            { lastImportedAt: { sort: 'asc', nulls: 'first' } },
-            { totalProducts: 'desc' },
-          ],
-        }),
+        prisma.$queryRaw<any[]>(Prisma.sql`
+          SELECT
+            f.*,
+            COALESCE(v.product_count, 0)::int    AS product_count,
+            COALESCE(v.live_count, 0)::int        AS live_count,
+            COALESCE(v.in_stock_count, 0)::int    AS in_stock_count
+          FROM feeds f
+          LEFT JOIN (
+            SELECT
+              program_id,
+              COUNT(*)::int                                              AS product_count,
+              COUNT(CASE WHEN visibility = 'live' THEN 1 END)::int      AS live_count,
+              COUNT(CASE WHEN in_stock = true THEN 1 END)::int          AS in_stock_count
+            FROM variants
+            GROUP BY program_id
+          ) v ON v.program_id = f.program_id
+          WHERE f.is_active = true
+          ORDER BY f.last_imported_at ASC NULLS FIRST, f.total_products DESC
+        `),
         prisma.$queryRaw<any[]>(Prisma.sql`
           SELECT
             COUNT(*) as total_feeds,
