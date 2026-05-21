@@ -1,7 +1,7 @@
-import { rawQuery } from "@shoetopia/db";
+import { rawQuery, prisma } from "@shoetopia/db";
 import { gunzipSync } from "zlib";
 import { parse as parseCSV } from "csv-parse/sync";
-import { FEEDS, CURRENCY } from "./feeds.js";
+import { CURRENCY } from "./feeds.js";
 import { categorizeProduct, detectGender } from "./smart-categorizer.js";
 import { mapFlexOffersCategory } from "./flexoffers-categories.js";
 import {
@@ -47,14 +47,14 @@ const MAX_ERRORS = 10;
 export async function importFeedById(
   feedId: number,
 ): Promise<ImportFeedResult> {
-  const feed = FEEDS.find((f) => f.id === feedId);
+  const feed = await prisma.feed.findUnique({ where: { programId: feedId } });
   if (!feed) throw new Error(`Feed not found: ${feedId}`);
 
-  console.log(`[import] Starting feed: ${feed.name} (${feed.id})`);
-  console.log(feed.url);
+  console.log(`[import] Starting feed: ${feed.programName} (${feed.programId})`);
+  console.log(feed.httpsLink);
 
   // Fetch feed CSV directly from FlexOffers URL
-  const response = await fetch(feed.url, {
+  const response = await fetch(feed.httpsLink!, {
     headers: { "Accept-Encoding": "gzip" },
   });
 
@@ -85,7 +85,7 @@ export async function importFeedById(
       quote: '"',
       escape: '"',
     });
-    console.log(`[import] Parsed ${rows.length} rows from ${feed.name}`);
+    console.log(`[import] Parsed ${rows.length} rows from ${feed.programName}`);
   } catch (e: any) {
     throw new Error(`Failed to parse CSV: ${e.message}`);
   }
@@ -132,7 +132,7 @@ export async function importFeedById(
       const inStock = guess.isInStock;
 
       const imageUrl = row.ImageURL || row["Image URL"] || row.image_url || "";
-      const brand = row.Brand || row.Manufacturer || feed.name || "";
+      const brand = row.Brand || row.Manufacturer || feed.programName || "";
       const rawCategory = row.Category || row.CategoryId || "";
       const sku = row.SKU || row.Pid || row.ProductId || "";
       const color = row.Color || "";
@@ -140,7 +140,7 @@ export async function importFeedById(
       const currency =
         row.PriceCurrency ||
         CURRENCY[feed.country as keyof typeof CURRENCY] ||
-        "USD";
+        "USD"; // feed.country is same field name
 
       // Basic validation - still skip truly invalid products
       // Note: shouldImportProduct from @/lib/smart-categorizer is intentionally NOT used here.
@@ -237,7 +237,7 @@ export async function importFeedById(
       }
 
       // Build product record
-      const productId = sku || `${feed.id}-${name.slice(0, 50)}`;
+      const productId = sku || `${feed.programId}-${name.slice(0, 50)}`;
       const effectivePrice = finalPrice > 0 ? finalPrice : price;
       const isOnSale =
         price > 0 && effectivePrice > 0 && effectivePrice < price;
@@ -250,7 +250,7 @@ export async function importFeedById(
       const variantSlug = generateVariantSlug(name, color, size);
 
       productsToInsert.push({
-        program_id: feed.id,
+        program_id: feed.programId,
         product_id: productId,
         country: feed.country,
         region: feed.region, // Region for subdomain routing (na, eu, me, apac)
@@ -260,7 +260,7 @@ export async function importFeedById(
         parent_slug: parentSlug,
         variant_slug: variantSlug,
         brand: brand,
-        advertiser_name: feed.name, // ALWAYS set from feed name (retailer like "DSW", "Zappos")
+        advertiser_name: feed.programName, // ALWAYS set from feed name (retailer like "DSW", "Zappos")
         description: description.slice(0, 1000),
         price: price || null,
         final_price: effectivePrice || null,
@@ -397,14 +397,14 @@ export async function importFeedById(
   }
 
   console.log(
-    `[import] Complete: ${imported} products imported from ${feed.name}`,
+    `[import] Complete: ${imported} products imported from ${feed.programName}`,
   );
 
   return {
-    feed: feed.name,
-    feedId: feed.id,
+    feed: feed.programName,
+    feedId: feed.programId,
     imported,
-    programId: feed.id,
+    programId: feed.programId,
     stats,
     errors,
   };
