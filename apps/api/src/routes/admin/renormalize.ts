@@ -3,12 +3,16 @@ import { requireApiSecret } from '../../plugins/auth.js'
 import { prisma, Prisma } from '@shoetopia/db'
 import { normalizeProductName, generateParentSlug } from '../../lib/normalize.js'
 import { upsertGroups, wireGroupIds, regroupStep, hideProducts } from '../../lib/shared-steps.js'
-import { FEEDS } from '../../lib/feeds.js'
 
 const BATCH_SIZE = 500
 
 const renormalizeRoute: FastifyPluginAsync = async (fastify) => {
   fastify.get('/api/admin/renormalize', { preHandler: requireApiSecret }, async (_request, reply) => {
+    const feedList = await prisma.feed.findMany({
+      where: { isActive: true },
+      select: { programId: true, programName: true, country: true },
+      orderBy: { programName: 'asc' },
+    })
     return reply.send({
       usage: 'POST /api/admin/renormalize',
       body: {
@@ -16,7 +20,7 @@ const renormalizeRoute: FastifyPluginAsync = async (fastify) => {
         preview: 'optional bool — dry run: shows before/after sample without any writes',
         phase: 'optional "1" | "1b" | "2" — run a single phase only (default: run all)',
       },
-      feeds: FEEDS.map(f => ({ id: f.id, name: f.name, country: f.country })),
+      feeds: feedList.map(f => ({ id: f.programId, name: f.programName, country: f.country })),
     })
   })
 
@@ -25,7 +29,9 @@ const renormalizeRoute: FastifyPluginAsync = async (fastify) => {
   }>('/api/admin/renormalize', { preHandler: requireApiSecret }, async (request, reply) => {
     const started = Date.now()
     const { programId, preview = false, phase } = request.body ?? {}
-    const feed = programId != null ? FEEDS.find(f => f.id === programId) ?? null : null
+    const feed = programId != null
+      ? await prisma.feed.findUnique({ where: { programId }, select: { programId: true, programName: true } })
+      : null
 
     try {
       // PREVIEW MODE
@@ -60,7 +66,7 @@ const renormalizeRoute: FastifyPluginAsync = async (fastify) => {
 
         return reply.send({
           preview: true,
-          feed: feed ? { id: feed.id, name: feed.name } : 'all feeds',
+          feed: feed ? { id: feed.programId, name: feed.programName } : 'all feeds',
           totalVariants: Number(totalCount[0]?.count ?? 0),
           sampledVariants: sampleRows.length,
           wouldUpdate: wouldChange.length,
@@ -122,7 +128,7 @@ const renormalizeRoute: FastifyPluginAsync = async (fastify) => {
         }
 
         phase1 = { totalVariants, totalUpdated }
-        fastify.log.info(`[renormalize] Phase 1 done (${feed?.name ?? 'all'}): ${totalVariants} scanned, ${totalUpdated} updated`)
+        fastify.log.info(`[renormalize] Phase 1 done (${feed?.programName ?? 'all'}): ${totalVariants} scanned, ${totalUpdated} updated`)
       }
 
       // PHASE 1b: Recalculate is_on_sale + discount_pct
@@ -148,7 +154,7 @@ const renormalizeRoute: FastifyPluginAsync = async (fastify) => {
             `)
 
         phase1b = { saleFixed }
-        fastify.log.info(`[renormalize] Phase 1b done (${feed?.name ?? 'all'}): ${saleFixed} rows recalculated`)
+        fastify.log.info(`[renormalize] Phase 1b done (${feed?.programName ?? 'all'}): ${saleFixed} rows recalculated`)
       }
 
       // PHASE 2: Rebuild product groups
@@ -167,7 +173,7 @@ const renormalizeRoute: FastifyPluginAsync = async (fastify) => {
 
       return reply.send({
         success: true,
-        feed: feed ? { id: feed.id, name: feed.name } : 'all',
+        feed: feed ? { id: feed.programId, name: feed.programName } : 'all',
         durationMs: Date.now() - started,
         ...(phase1 && { phase1 }),
         ...(phase1b && { phase1b }),
