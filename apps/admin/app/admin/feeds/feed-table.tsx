@@ -25,12 +25,14 @@ export const FeedTable = ({
   onUploadCSV,
 }: FeedTableProps) => {
   const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const handleUpload = async () => {
     const file = (
       document.getElementById("feeds-csv-upload") as HTMLInputElement
     )?.files?.[0];
-    if (!file) return;
+    if (!file) { setUploadError("Please select a CSV file"); return; }
+    setUploadError(null);
     setUploading(true);
     try {
       const text = await file.text();
@@ -68,6 +70,9 @@ export const FeedTable = ({
             {uploading ? "Uploading..." : "Upload Feeds"}
           </button>
         </div>
+        {uploadError && (
+          <p className="text-sm text-red-400 mt-2">{uploadError}</p>
+        )}
       </div>
 
       <div className="flex gap-4 items-center">
