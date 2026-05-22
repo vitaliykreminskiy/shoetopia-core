@@ -2,17 +2,16 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast, Toaster } from 'sonner'
 
 export default function AdminLogin() {
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
-    setError('')
 
     const res = await fetch('/api/admin/auth/login', {
       method: 'POST',
@@ -23,13 +22,14 @@ export default function AdminLogin() {
     if (res.ok) {
       router.push('/admin')
     } else {
-      setError('Invalid password')
+      toast.error('Invalid password')
       setLoading(false)
     }
   }
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#0a0a0a' }}>
+      <Toaster position="bottom-right" theme="dark" />
       <form onSubmit={handleSubmit} style={{ background: '#1a1a1a', padding: '2rem', borderRadius: '8px', width: '320px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <h1 style={{ color: '#fff', margin: 0, fontSize: '1.2rem' }}>Admin Login</h1>
         <input
@@ -40,7 +40,6 @@ export default function AdminLogin() {
           autoFocus
           style={{ padding: '0.6rem', borderRadius: '4px', border: '1px solid #333', background: '#111', color: '#fff', fontSize: '1rem' }}
         />
-        {error && <p style={{ color: '#f87171', margin: 0, fontSize: '0.875rem' }}>{error}</p>}
         <button
           type="submit"
           disabled={loading || !password}
