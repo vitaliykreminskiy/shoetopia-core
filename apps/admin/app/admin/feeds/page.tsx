@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 import type { FeedRow, FeedStats, SortBy } from "./types";
 import { FeedStatsBar } from "./feed-stats-bar";
 import { FeedTable } from "./feed-table";
@@ -12,10 +13,8 @@ export default function FeedsPage() {
     stats: FeedStats;
   } | null>(null);
   const [feedsLoading, setFeedsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [feedsSortBy, setFeedsSortBy] = useState<SortBy>("pending");
   const [feedsFilterCountry, setFeedsFilterCountry] = useState<string>("all");
-  const [message, setMessage] = useState("");
 
   const [importing, setImporting] = useState(false);
   const [importingFeedId, setImportingFeedId] = useState<number | null>(null);
@@ -35,7 +34,6 @@ export default function FeedsPage() {
 
   const loadFeeds = async () => {
     setFeedsLoading(true);
-    setError(null);
     try {
       const res = await fetch("/api/admin/import-feeds");
       if (!res.ok)
@@ -43,7 +41,7 @@ export default function FeedsPage() {
       const data = await res.json();
       setFeedsData(data);
     } catch (e: any) {
-      setError(e.message);
+      toast.error(e.message);
     } finally {
       setFeedsLoading(false);
     }
@@ -62,7 +60,6 @@ export default function FeedsPage() {
     const feed = feedsData?.feeds?.find((f) => f.program_id === feedId);
     setImportingFeedId(feedId);
     setImporting(true);
-    setMessage("");
     try {
       const res = await fetch("/api/admin/import", {
         method: "POST",
@@ -71,15 +68,15 @@ export default function FeedsPage() {
       });
       const data = await res.json();
       if (data.success) {
-        setMessage(
+        toast.success(
           `Imported ${data.imported} products from ${feed?.program_name}`,
         );
         await loadFeeds();
       } else {
-        setMessage(`Error: ${data.error}`);
+        toast.error(`Error: ${data.error}`);
       }
     } catch (e: any) {
-      setMessage(`Error: ${e.message}`);
+      toast.error(`Error: ${e.message}`);
     }
     setImporting(false);
     setImportingFeedId(null);
@@ -87,11 +84,10 @@ export default function FeedsPage() {
 
   const importSelected = async () => {
     if (selectedFeedIds.size === 0) {
-      setMessage("Select at least one feed");
+      toast.error("Select at least one feed");
       return;
     }
     setBatchImporting(true);
-    setMessage("");
     const feedIds = Array.from(selectedFeedIds);
     let totalImported = 0;
     let totalSkipped = 0;
@@ -121,7 +117,7 @@ export default function FeedsPage() {
     }
 
     await loadFeeds();
-    setMessage(
+    toast.success(
       `Batch import complete: ${totalImported} imported, ${totalSkipped} skipped across ${feedIds.length} feeds`,
     );
     setSelectedFeedIds(new Set());
@@ -131,7 +127,6 @@ export default function FeedsPage() {
 
   const uploadCSV = async (text: string) => {
     setFeedsLoading(true);
-    setMessage("");
     try {
       const res = await fetch("/api/admin/import-feeds", {
         method: "POST",
@@ -140,16 +135,16 @@ export default function FeedsPage() {
       });
       const data = await res.json();
       if (data.success) {
-        setMessage(
+        toast.success(
           `Imported ${data.imported} new feeds, updated ${data.updated} existing`,
         );
         await loadFeeds();
       } else {
-        setMessage(`Error: ${data.error}`);
+        toast.error(`Error: ${data.error}`);
         throw new Error(data.error);
       }
     } catch (e: any) {
-      setMessage(`Error: ${e.message}`);
+      toast.error(`Error: ${e.message}`);
     } finally {
       setFeedsLoading(false);
     }
@@ -183,19 +178,6 @@ export default function FeedsPage() {
 
   return (
     <div className="space-y-6">
-      {error && (
-        <div className="p-4 rounded bg-red-900/30 text-red-300">
-          Failed to load feeds: {error}
-        </div>
-      )}
-      {message && (
-        <div
-          className={`p-4 rounded ${message.includes("Error") ? "bg-red-900/30 text-red-300" : "bg-green-900/30 text-green-300"}`}
-        >
-          {message}
-        </div>
-      )}
-
       {feedsData?.stats && <FeedStatsBar stats={feedsData.stats} />}
 
       <FeedImportGrid
