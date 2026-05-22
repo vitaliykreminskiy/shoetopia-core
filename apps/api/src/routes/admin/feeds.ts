@@ -47,13 +47,13 @@ const feedsAdminRoute: FastifyPluginAsync = async (fastify) => {
         `),
         prisma.$queryRaw<any[]>(Prisma.sql`
           SELECT
-            COUNT(*) as total_feeds,
-            COUNT(*) FILTER (WHERE last_imported_at IS NOT NULL) as processed_feeds,
-            COUNT(*) FILTER (WHERE last_imported_at IS NULL) as pending_feeds,
-            COUNT(*) FILTER (WHERE status = 'ready') as ready_feeds,
-            COUNT(*) FILTER (WHERE country = 'US') as us_feeds,
-            SUM(total_products)::bigint as total_available_products,
-            SUM(products_imported)::bigint as total_imported_products
+            COUNT(*)::int as total_feeds,
+            COUNT(*) FILTER (WHERE last_imported_at IS NOT NULL)::int as processed_feeds,
+            COUNT(*) FILTER (WHERE last_imported_at IS NULL)::int as pending_feeds,
+            COUNT(*) FILTER (WHERE status = 'ready')::int as ready_feeds,
+            COUNT(*) FILTER (WHERE country = 'US')::int as us_feeds,
+            SUM(total_products)::int as total_available_products,
+            SUM(products_imported)::int as total_imported_products
           FROM feeds
           WHERE is_active = true
         `),
@@ -176,11 +176,11 @@ const feedsAdminRoute: FastifyPluginAsync = async (fastify) => {
 
         const stats = await prisma.$queryRaw<any[]>(Prisma.sql`
           SELECT
-            COUNT(*) as total_feeds,
-            COUNT(*) FILTER (WHERE last_imported_at IS NOT NULL) as processed_feeds,
-            COUNT(*) FILTER (WHERE last_imported_at IS NULL) as pending_feeds,
-            SUM(total_products) as total_available_products,
-            SUM(products_imported) as total_imported_products
+            COUNT(*)::int as total_feeds,
+            COUNT(*) FILTER (WHERE last_imported_at IS NOT NULL)::int as processed_feeds,
+            COUNT(*) FILTER (WHERE last_imported_at IS NULL)::int as pending_feeds,
+            SUM(total_products)::int as total_available_products,
+            SUM(products_imported)::int as total_imported_products
           FROM feeds
           WHERE is_active = true
         `)

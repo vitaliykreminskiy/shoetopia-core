@@ -14,18 +14,18 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="border-b border-border bg-card">
+    <div className="min-h-screen bg-neutral-950 text-white">
+      <div className="border-b border-neutral-800 bg-neutral-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-12 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Database size={16} className="text-[var(--brand-rose)]" />
-            <span className="text-sm font-semibold text-foreground">
+            <span className="text-sm font-semibold text-white">
               Shoetopia Admin
             </span>
           </div>
           <Link
             href="/"
-            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            className="flex items-center gap-1 text-xs text-neutral-400 hover:text-white transition-colors"
           >
             <ArrowLeft size={12} /> Back to site
           </Link>

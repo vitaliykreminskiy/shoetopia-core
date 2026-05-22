@@ -4,6 +4,7 @@ import redisPlugin from "./plugins/redis.js";
 import bullBoardPlugin from "./plugins/bull-board.js";
 import { registerRoutes } from "./routes/index.js";
 import { prisma } from "@shoetopia/db";
+import { Readable } from "node:stream";
 
 const server = Fastify({
   logger: {
@@ -32,13 +33,4 @@ try {
   server.log.info("[db] connected");
 } catch (err: any) {
   server.log.error(`[db] connection failed: ${err.message}`);
-}
-
-// Start BullMQ workers (skip in test environment)
-if (process.env.NODE_ENV !== "test") {
-  const { feedImportWorker } = await import("./workers/feed-import.worker.js");
-  const { housekeepingWorker } =
-    await import("./workers/housekeeping.worker.js");
-  const { syncWorker } = await import("./workers/sync.worker.js");
-  server.log.info("[workers] feed-import, housekeeping, sync workers started");
 }

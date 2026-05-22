@@ -13,9 +13,11 @@ export default function ArchivePage() {
   async function loadArchived() {
     setArchiveLoading(true);
     try {
-      const res = await fetch("/api/admin/archive?visibility=archived&limit=50");
+      const res = await fetch(
+        "/api/admin/archive?visibility=archived&limit=50",
+      );
       const data = await res.json();
-      setArchivedProducts(data.products);
+      setArchivedProducts(data.products || []);
     } catch (e) {
       console.error(e);
     }

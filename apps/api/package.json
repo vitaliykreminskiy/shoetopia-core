@@ -9,6 +9,9 @@
     "start": "node dist/main.js",
     "test": "vitest run"
   },
+  "exports": {
+    "./workers/*": "./src/workers/*"
+  },
   "dependencies": {
     "@bull-board/api": "^6.0.0",
     "@bull-board/fastify": "^6.0.0",
