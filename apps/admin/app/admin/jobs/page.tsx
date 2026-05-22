@@ -1,5 +1,5 @@
-import { JobsTab } from "../JobsTab";
+import { JobsPage } from "./jobs-page"
 
-export default function JobsPage() {
-  return <JobsTab />;
+export default function JobsRoute() {
+  return <JobsPage />
 }
