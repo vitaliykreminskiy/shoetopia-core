@@ -12,7 +12,7 @@ vi.mock('@shoetopia/db', () => ({
 }))
 
 import { prisma, rawQuery } from '@shoetopia/db'
-import { importFeedById } from '../import-feed.js'
+import { importFeedById } from '@shoetopia/jobs'
 
 const makeFeed = () => ({
   programId: 1,

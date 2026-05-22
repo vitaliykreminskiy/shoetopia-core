@@ -1,6 +1,6 @@
 import type { FastifyPluginAsync } from 'fastify'
 import { requireApiSecret } from '../../plugins/auth.js'
-import { feedImportQueue, housekeepingQueue, syncQueue } from '../../queues/index.js'
+import { feedImportQueue, housekeepingQueue, syncQueue } from '@shoetopia/jobs'
 
 const jobsRoute: FastifyPluginAsync = async (fastify) => {
   fastify.get('/api/admin/jobs', { preHandler: requireApiSecret }, async (_request, reply) => {

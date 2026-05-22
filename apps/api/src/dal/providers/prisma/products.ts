@@ -1,6 +1,6 @@
 import { prisma, rawQuery, Prisma } from "@shoetopia/db";
 
-import { HIDDEN_BRANDS } from "../../../lib/feeds.js";
+import { HIDDEN_BRANDS } from "@shoetopia/jobs";
 import type {
   ProductsDAL,
   ProductListItem,
@@ -26,7 +26,7 @@ import type {
   OccasionProduct,
   ProductStats,
 } from "../../product.js";
-import { FOOTWEAR_FILTER, IMAGE_CDN_FILTER } from "../../../lib/shared/index.js";
+import { FOOTWEAR_FILTER, IMAGE_CDN_FILTER } from "@shoetopia/jobs";
 
 const PRODUCTS_PER_SITEMAP = 45000;
 
