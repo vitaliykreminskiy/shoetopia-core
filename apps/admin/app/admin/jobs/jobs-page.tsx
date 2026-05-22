@@ -47,8 +47,8 @@ export const JobsPage = () => {
       const res = await fetch("/api/admin/jobs")
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       setData(await res.json())
-    } catch (e: any) {
-      setError(e.message)
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e))
     } finally {
       setLoading(false)
     }
@@ -72,23 +72,17 @@ export const JobsPage = () => {
     await load()
   }
 
-  const handleCancel = async (jobId: string, queue: string) => {
+  const removeJob = async (jobId: string, queue: string) => {
     await callAction("remove", { jobId, queue })
     await load()
   }
 
-  const handleRemove = async (jobId: string, queue: string) => {
-    await callAction("remove", { jobId, queue })
-    await load()
-  }
+  const handleCancel = removeJob
+  const handleRemove = removeJob
+  const handleDelete = removeJob
 
   const handleRetry = async (jobId: string, queue: string) => {
-    await callAction("retry", { jobId, queue: queue === "feed-import" ? "feed-import" : queue })
-    await load()
-  }
-
-  const handleDelete = async (jobId: string, queue: string) => {
-    await callAction("remove", { jobId, queue })
+    await callAction("retry", { jobId, queue })
     await load()
   }
 
@@ -117,41 +111,35 @@ export const JobsPage = () => {
     <div className="space-y-6">
       <JobsStatsBar stats={stats} onRefresh={load} refreshing={loading} />
 
-      {data.queues.flatMap(q =>
-        q.active.length > 0 ? (
-          <RunningJobsList
-            key={`running-${q.name}`}
-            jobs={q.active}
-            queueName={q.name}
-            onPause={handlePause}
-            onCancel={handleCancel}
-          />
-        ) : []
-      )}
+      {data.queues.filter(q => q.active.length > 0).map(q => (
+        <RunningJobsList
+          key={`running-${q.name}`}
+          jobs={q.active}
+          queueName={q.name}
+          onPause={handlePause}
+          onCancel={handleCancel}
+        />
+      ))}
 
-      {data.queues.flatMap(q =>
-        q.waitingCount > 0 ? (
-          <WaitingJobsList
-            key={`waiting-${q.name}`}
-            jobs={q.waiting}
-            totalCount={q.waitingCount}
-            queueName={q.name}
-            onRemove={handleRemove}
-          />
-        ) : []
-      )}
+      {data.queues.filter(q => q.waitingCount > 0).map(q => (
+        <WaitingJobsList
+          key={`waiting-${q.name}`}
+          jobs={q.waiting}
+          totalCount={q.waitingCount}
+          queueName={q.name}
+          onRemove={handleRemove}
+        />
+      ))}
 
-      {data.queues.flatMap(q =>
-        q.failed.length > 0 ? (
-          <FailedJobsList
-            key={`failed-${q.name}`}
-            jobs={q.failed}
-            queueName={q.name}
-            onRetry={handleRetry}
-            onDelete={handleDelete}
-          />
-        ) : []
-      )}
+      {data.queues.filter(q => q.failed.length > 0).map(q => (
+        <FailedJobsList
+          key={`failed-${q.name}`}
+          jobs={q.failed}
+          queueName={q.name}
+          onRetry={handleRetry}
+          onDelete={handleDelete}
+        />
+      ))}
 
       <CompletedJobsList jobs={allCompleted} />
     </div>
