@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import { toast } from "sonner"
 import type { JobsData, JobsStats } from "./types"
 import { JobsStatsBar } from "./jobs-stats-bar"
 import { RunningJobsList } from "./running-jobs-list"
@@ -38,17 +39,15 @@ const computeStats = (data: JobsData): JobsStats => {
 export const JobsPage = () => {
   const [data, setData] = useState<JobsData | null>(null)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
-    setError(null)
     try {
       const res = await fetch("/api/admin/jobs")
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       setData(await res.json())
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e))
+      toast.error(e instanceof Error ? e.message : String(e))
     } finally {
       setLoading(false)
     }
@@ -89,14 +88,6 @@ export const JobsPage = () => {
   if (!data && loading) {
     return (
       <div className="text-neutral-500 text-sm py-12 text-center">Loading jobs…</div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="p-4 rounded bg-red-900/30 text-red-300 text-sm">
-        Failed to load jobs: {error}
-      </div>
     )
   }
 
