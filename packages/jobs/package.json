@@ -1,0 +1,22 @@
+{
+  "name": "@shoetopia/jobs",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@shoetopia/db": "workspace:*",
+    "@shoetopia/shared": "workspace:*",
+    "bullmq": "^5.0.0",
+    "csv-parse": "^5.5.6",
+    "ioredis": "^5.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.4.5"
+  }
+}
