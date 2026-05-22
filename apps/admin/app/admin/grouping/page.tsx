@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function GroupingPage() {
   const [groupingRunning, setGroupingRunning] = useState(false);
-  const [groupingResult, setGroupingResult] = useState<any>(null);
   const [groupingFeedId, setGroupingFeedId] = useState<number>(161992);
   const [groupingPreview, setGroupingPreview] = useState<any>(null);
   const [groupingStep, setGroupingStep] = useState("");
@@ -39,7 +39,6 @@ export default function GroupingPage() {
               onChange={(e) => {
                 setGroupingFeedId(Number(e.target.value));
                 setGroupingPreview(null);
-                setGroupingResult(null);
               }}
               className="bg-neutral-800 border border-neutral-700 text-white text-sm rounded px-3 py-2 min-w-[220px]"
             >
@@ -58,7 +57,6 @@ export default function GroupingPage() {
               setGroupingRunning(true);
               setGroupingStep("Previewing…");
               setGroupingPreview(null);
-              setGroupingResult(null);
               try {
                 const body: any = { preview: true };
                 if (groupingFeedId !== 0) body.programId = groupingFeedId;
@@ -85,7 +83,6 @@ export default function GroupingPage() {
               if (!confirm(`Apply name normalization to ${groupingFeedId === 0 ? "ALL feeds" : "this feed"}?`)) return;
               setGroupingRunning(true);
               setGroupingStep("Normalizing names…");
-              setGroupingResult(null);
               try {
                 const body: any = { phase: "1" };
                 if (groupingFeedId !== 0) body.programId = groupingFeedId;
@@ -94,7 +91,12 @@ export default function GroupingPage() {
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify(body),
                 });
-                setGroupingResult(await res.json());
+                const data = await res.json();
+                if (data.success) {
+                  toast.success(`Done in ${((data.durationMs ?? 0) / 1000).toFixed(1)}s`)
+                } else {
+                  toast.error(`Error: ${data.error}`)
+                }
               } finally {
                 setGroupingRunning(false);
                 setGroupingStep("");
@@ -111,7 +113,6 @@ export default function GroupingPage() {
             onClick={async () => {
               setGroupingRunning(true);
               setGroupingStep("Fixing sale flags…");
-              setGroupingResult(null);
               try {
                 const body: any = { phase: "1b" };
                 if (groupingFeedId !== 0) body.programId = groupingFeedId;
@@ -120,7 +121,12 @@ export default function GroupingPage() {
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify(body),
                 });
-                setGroupingResult(await res.json());
+                const data = await res.json();
+                if (data.success) {
+                  toast.success(`Done in ${((data.durationMs ?? 0) / 1000).toFixed(1)}s`)
+                } else {
+                  toast.error(`Error: ${data.error}`)
+                }
               } finally {
                 setGroupingRunning(false);
                 setGroupingStep("");
@@ -138,14 +144,18 @@ export default function GroupingPage() {
               if (!confirm("Rebuild ALL product groups? This is global and may take up to 2 minutes.")) return;
               setGroupingRunning(true);
               setGroupingStep("Rebuilding groups…");
-              setGroupingResult(null);
               try {
                 const res = await fetch("/api/admin/renormalize", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ phase: "2" }),
                 });
-                setGroupingResult(await res.json());
+                const data = await res.json();
+                if (data.success) {
+                  toast.success(`Done in ${((data.durationMs ?? 0) / 1000).toFixed(1)}s`)
+                } else {
+                  toast.error(`Error: ${data.error}`)
+                }
               } finally {
                 setGroupingRunning(false);
                 setGroupingStep("");
@@ -212,37 +222,6 @@ export default function GroupingPage() {
                   </table>
                 </div>
               </div>
-            )}
-          </div>
-        )}
-
-        {groupingResult && (
-          <div className={`mt-4 p-4 rounded border text-sm ${groupingResult.success ? "bg-green-900/20 border-green-700" : "bg-red-900/20 border-red-700"}`}>
-            {groupingResult.success ? (
-              <div className="space-y-1">
-                <p className="font-semibold text-green-400">
-                  ✓ Done in {((groupingResult.durationMs ?? 0) / 1000).toFixed(1)}s
-                </p>
-                {groupingResult.phase1 && (
-                  <p className="text-neutral-300">
-                    Phase 1 — {groupingResult.phase1.totalVariants?.toLocaleString()} scanned,{" "}
-                    <strong>{groupingResult.phase1.totalUpdated?.toLocaleString()}</strong> slugs updated
-                  </p>
-                )}
-                {groupingResult.phase1b && (
-                  <p className="text-neutral-300">
-                    Phase 1b — <strong>{groupingResult.phase1b.saleFixed?.toLocaleString()}</strong> sale flags recalculated
-                  </p>
-                )}
-                {groupingResult.phase2 && (
-                  <p className="text-neutral-300">
-                    Phase 2 — <strong>{groupingResult.phase2.groupsUpserted?.toLocaleString()}</strong> groups rebuilt,{" "}
-                    <strong>{groupingResult.phase2.hidden?.toLocaleString()}</strong> hidden
-                  </p>
-                )}
-              </div>
-            ) : (
-              <p className="text-red-400">Error: {groupingResult.error}</p>
             )}
           </div>
         )}
