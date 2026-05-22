@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
+import { toast } from "sonner";
 import { DailySyncWidget } from "./daily-sync-widget";
 
 export default function StatusPage() {
   const [status, setStatus] = useState<any>(null);
   const [reprocessing, setReprocessing] = useState(false);
   const [reprocessRunId, setReprocessRunId] = useState<string | null>(null);
-  const [message, setMessage] = useState("");
 
   useEffect(() => {
     refreshStatus();
@@ -26,15 +25,13 @@ export default function StatusPage() {
 
   return (
     <div className="space-y-8">
-      {message && (
-        <div
-          className={`p-4 rounded ${message.includes("Error") || message.includes("Failed") ? "bg-red-900/30 text-red-300" : "bg-green-900/30 text-green-300"}`}
-        >
-          {message}
-        </div>
-      )}
-
-      <DailySyncWidget onMessage={setMessage} />
+      <DailySyncWidget
+        onMessage={(msg) =>
+          msg.startsWith("Error") || msg.startsWith("Failed")
+            ? toast.error(msg)
+            : toast.success(msg)
+        }
+      />
 
       {/* Reprocess All Products */}
       <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6">
@@ -73,14 +70,12 @@ export default function StatusPage() {
                 const data = await res.json();
                 if (data.started) {
                   setReprocessRunId(data.runId);
-                  setMessage(
-                    `Reprocess started in background. Run ID: ${data.runId}`,
-                  );
+                  toast.success(`Reprocess started in background. Run ID: ${data.runId}`);
                 } else {
-                  setMessage(`Failed to start reprocess: ${data.error}`);
+                  toast.error(`Failed to start reprocess: ${data.error}`);
                 }
               } catch (e: any) {
-                setMessage(`Error: ${e.message}`);
+                toast.error(`Error: ${e.message}`);
               }
               setReprocessing(false);
             }}
