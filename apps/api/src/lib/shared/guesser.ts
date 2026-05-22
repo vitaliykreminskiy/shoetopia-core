@@ -64,6 +64,9 @@ export const createGuesser = (row: Record<string, string>) => {
     row.LinkUrl ||
     row["Deep Link URL"] ||
     row.ProductURL ||
+    row.BuyURL ||
+    row["Buy URL"] ||
+    row.buy_url ||
     "";
   const isInStockRaw = (
     row.IsInStock ||
