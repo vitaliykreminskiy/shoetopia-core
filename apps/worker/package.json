@@ -6,16 +6,19 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "test": "vitest run"
   },
   "dependencies": {
-    "@shoetopia/api": "workspace:*",
+    "@shoetopia/db": "workspace:*",
+    "@shoetopia/jobs": "workspace:*",
     "bullmq": "^5.0.0",
     "dotenv": "^17.4.2"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "tsx": "^4.0.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitest": "^2.0.0"
   }
 }

@@ -5,8 +5,8 @@ import { config } from "dotenv";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 config({ path: path.resolve(__dirname, "../../../../.env"), override: false });
 
-await import("@shoetopia/api/workers/feed-import.worker.js");
-await import("@shoetopia/api/workers/housekeeping.worker.js");
-await import("@shoetopia/api/workers/sync.worker.js");
+await import("./workers/feed-import.worker.js");
+await import("./workers/housekeeping.worker.js");
+await import("./workers/sync.worker.js");
 
 console.log("[workers] feed-import, housekeeping, sync workers started");
