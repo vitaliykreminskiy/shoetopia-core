@@ -1,5 +1,6 @@
 import { rawQuery, prisma } from "@shoetopia/db";
-import { Readable } from "node:stream";
+import { Readable, PassThrough } from "node:stream";
+import { pipeline } from "node:stream/promises";
 import { createGunzip } from "node:zlib";
 import { parse } from "csv-parse";
 import { CURRENCY } from "./feeds.js";
@@ -158,20 +159,24 @@ export async function importFeedById(
     }
   };
 
-  const parser = Readable.fromWeb(response.body as Parameters<typeof Readable.fromWeb>[0])
-    .pipe(createGunzip())
-    .pipe(
-      parse({
-        columns: true,
-        skip_empty_lines: true,
-        relax_column_count: true,
-        relax_quotes: true,
-        quote: '"',
-        escape: '"',
-      }),
-    );
+  if (!response.body) throw new Error("Failed to fetch CSV: empty response body");
 
-  for await (const row of parser as AsyncIterable<Record<string, string>>) {
+  const out = new PassThrough({ objectMode: true });
+  const pipelinePromise = pipeline(
+    Readable.fromWeb(response.body as Parameters<typeof Readable.fromWeb>[0]),
+    createGunzip(),
+    parse({
+      columns: true,
+      skip_empty_lines: true,
+      relax_column_count: true,
+      relax_quotes: true,
+      quote: '"',
+      escape: '"',
+    }),
+    out,
+  );
+
+  for await (const row of out as AsyncIterable<Record<string, string>>) {
     stats.total++;
     const guess = createGuesser(row);
 
@@ -282,6 +287,7 @@ export async function importFeedById(
   }
 
   await flushBatch();
+  await pipelinePromise;
 
   console.log(`[import] Complete: ${imported} products imported from ${feed.programName}`);
 
