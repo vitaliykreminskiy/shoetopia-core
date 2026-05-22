@@ -42,6 +42,22 @@ services:
       redis:
         condition: service_healthy
 
+  worker:
+    build:
+      context: .
+      dockerfile: apps/worker/Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://shoetopia:${POSTGRES_PASSWORD}@postgres:5432/shoetopia
+      REDIS_URL: redis://redis:6379
+      FLEXOFFERS_API_KEY: ${FLEXOFFERS_API_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
   admin:
     build:
       context: .
