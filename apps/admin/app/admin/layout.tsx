@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Database, ArrowLeft } from "lucide-react";
 import { TabNav } from "./TabNav";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Admin — Shoetopia",
@@ -37,6 +38,8 @@ export default function AdminLayout({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {children}
       </div>
+
+      <Toaster position="bottom-right" theme="dark" />
     </div>
   );
 }
