@@ -44,8 +44,9 @@ export default function FeedsPage() {
       setFeedsData(data);
     } catch (e: any) {
       setError(e.message);
+    } finally {
+      setFeedsLoading(false);
     }
-    setFeedsLoading(false);
   };
 
   const toggleFeedSelection = (programId: number) => {
@@ -145,11 +146,13 @@ export default function FeedsPage() {
         await loadFeeds();
       } else {
         setMessage(`Error: ${data.error}`);
+        throw new Error(data.error);
       }
     } catch (e: any) {
       setMessage(`Error: ${e.message}`);
+    } finally {
+      setFeedsLoading(false);
     }
-    setFeedsLoading(false);
   };
 
   const sortedFilteredFeeds =
