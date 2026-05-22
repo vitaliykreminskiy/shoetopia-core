@@ -9,15 +9,13 @@
     "start": "node dist/main.js",
     "test": "vitest run"
   },
-  "exports": {
-    "./workers/*": "./src/workers/*"
-  },
   "dependencies": {
     "@bull-board/api": "^6.0.0",
     "@bull-board/fastify": "^6.0.0",
     "@fastify/cors": "^10.0.0",
     "@fastify/multipart": "^9.0.0",
     "@shoetopia/db": "workspace:*",
+    "@shoetopia/jobs": "workspace:*",
     "@shoetopia/shared": "workspace:*",
     "basic-ftp": "^5.0.5",
     "bullmq": "^5.0.0",

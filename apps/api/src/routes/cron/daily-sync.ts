@@ -1,6 +1,6 @@
 import type { FastifyPluginAsync } from "fastify";
 import { requireApiSecret } from "../../plugins/auth.js";
-import { syncQueue } from "../../queues/index.js";
+import { syncQueue } from "@shoetopia/jobs";
 import { randomUUID } from "crypto";
 
 const dailySyncRoute: FastifyPluginAsync = async (fastify) => {

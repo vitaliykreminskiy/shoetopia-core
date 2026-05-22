@@ -250,8 +250,8 @@ export async function importFeedById(
       batch.push({
         program_id: feed.programId,
         product_id: productId,
-        country: feed.country,
-        region: feed.region,
+        country: feed.country ?? '',
+        region: feed.region ?? '',
         currency,
         name,
         normalized_name: normalizedName,

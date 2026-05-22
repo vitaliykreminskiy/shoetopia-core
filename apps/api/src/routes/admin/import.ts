@@ -1,6 +1,6 @@
 import type { FastifyPluginAsync } from 'fastify'
 import { requireApiSecret } from '../../plugins/auth.js'
-import { importFeedById } from '../../lib/import-feed.js'
+import { importFeedById, feedImportQueue, feedImportQueueEvents } from '@shoetopia/jobs'
 import { prisma } from '@shoetopia/db'
 
 const importRoute: FastifyPluginAsync = async (fastify) => {
@@ -90,7 +90,7 @@ const importRoute: FastifyPluginAsync = async (fastify) => {
     }
   )
 
-  // Direct import endpoint
+  // Direct import endpoint — enqueues a BullMQ job and waits for completion
   fastify.post<{ Body: { feedId?: number } }>(
     '/api/admin/import',
     { preHandler: requireApiSecret },
@@ -98,8 +98,22 @@ const importRoute: FastifyPluginAsync = async (fastify) => {
       try {
         const { feedId } = request.body ?? {}
         if (!feedId) return reply.code(400).send({ error: 'feedId required' })
-        const result = await importFeedById(feedId)
-        return reply.send({ ...result, success: result.errors.length === 0, firstError: result.errors[0] ?? '' })
+
+        const feed = await prisma.feed.findUnique({
+          where: { programId: feedId },
+          select: { programName: true },
+        })
+        if (!feed) return reply.code(404).send({ error: `Feed ${feedId} not found` })
+
+        const runStartedAt = new Date().toISOString()
+        const job = await feedImportQueue.add('manual-import', {
+          feedId,
+          feedName: feed.programName,
+          runStartedAt,
+        })
+
+        const result = await job.waitUntilFinished(feedImportQueueEvents)
+        return reply.send({ ...result, success: true, firstError: result.errors[0] ?? '' })
       } catch (err: any) {
         fastify.log.error({ err }, '[import] Error')
         return reply.code(500).send({ error: err.message || 'Import failed' })

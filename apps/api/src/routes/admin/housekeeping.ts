@@ -1,7 +1,7 @@
 import type { FastifyPluginAsync } from 'fastify'
 import { requireApiSecret } from '../../plugins/auth.js'
 import { prisma, Prisma } from '@shoetopia/db'
-import { upsertGroups, regroupStep } from '../../lib/shared-steps.js'
+import { upsertGroups, regroupStep } from '@shoetopia/jobs'
 
 const housekeepingRoute: FastifyPluginAsync = async (fastify) => {
   // GET /api/admin/housekeeping/group-products — status

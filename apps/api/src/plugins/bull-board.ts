@@ -7,7 +7,7 @@ import {
   feedImportQueue,
   housekeepingQueue,
   syncQueue,
-} from "../queues/index.js";
+} from "@shoetopia/jobs";
 import { requireApiSecret } from "./auth.js";
 
 export default fp(async (fastify: FastifyInstance) => {

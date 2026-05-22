@@ -1,8 +1,7 @@
 import type { FastifyPluginAsync } from 'fastify'
 import { requireApiSecret } from '../../plugins/auth.js'
 import { prisma, Prisma } from '@shoetopia/db'
-import { normalizeProductName, generateParentSlug } from '../../lib/normalize.js'
-import { upsertGroups, wireGroupIds, regroupStep, hideProducts } from '../../lib/shared-steps.js'
+import { normalizeProductName, generateParentSlug, upsertGroups, wireGroupIds, regroupStep, hideProducts } from '@shoetopia/jobs'
 
 const BATCH_SIZE = 500
 

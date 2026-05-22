@@ -69,6 +69,9 @@ importers:
       '@shoetopia/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@shoetopia/jobs':
+        specifier: workspace:*
+        version: link:../../packages/jobs
       '@shoetopia/shared':
         specifier: workspace:*
         version: link:../../packages/shared
