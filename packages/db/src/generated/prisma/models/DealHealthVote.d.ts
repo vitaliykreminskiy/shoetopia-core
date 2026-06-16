@@ -1,0 +1,1033 @@
+import type * as runtime from "@prisma/client/runtime/client";
+import type * as Prisma from "../internal/prismaNamespace.js";
+/**
+ * Model DealHealthVote
+ *
+ */
+export type DealHealthVoteModel = runtime.Types.Result.DefaultSelection<Prisma.$DealHealthVotePayload>;
+export type AggregateDealHealthVote = {
+    _count: DealHealthVoteCountAggregateOutputType | null;
+    _avg: DealHealthVoteAvgAggregateOutputType | null;
+    _sum: DealHealthVoteSumAggregateOutputType | null;
+    _min: DealHealthVoteMinAggregateOutputType | null;
+    _max: DealHealthVoteMaxAggregateOutputType | null;
+};
+export type DealHealthVoteAvgAggregateOutputType = {
+    id: number | null;
+};
+export type DealHealthVoteSumAggregateOutputType = {
+    id: number | null;
+};
+export type DealHealthVoteMinAggregateOutputType = {
+    id: number | null;
+    productSlug: string | null;
+    vote: string | null;
+    fingerprint: string | null;
+    createdAt: Date | null;
+};
+export type DealHealthVoteMaxAggregateOutputType = {
+    id: number | null;
+    productSlug: string | null;
+    vote: string | null;
+    fingerprint: string | null;
+    createdAt: Date | null;
+};
+export type DealHealthVoteCountAggregateOutputType = {
+    id: number;
+    productSlug: number;
+    vote: number;
+    fingerprint: number;
+    createdAt: number;
+    _all: number;
+};
+export type DealHealthVoteAvgAggregateInputType = {
+    id?: true;
+};
+export type DealHealthVoteSumAggregateInputType = {
+    id?: true;
+};
+export type DealHealthVoteMinAggregateInputType = {
+    id?: true;
+    productSlug?: true;
+    vote?: true;
+    fingerprint?: true;
+    createdAt?: true;
+};
+export type DealHealthVoteMaxAggregateInputType = {
+    id?: true;
+    productSlug?: true;
+    vote?: true;
+    fingerprint?: true;
+    createdAt?: true;
+};
+export type DealHealthVoteCountAggregateInputType = {
+    id?: true;
+    productSlug?: true;
+    vote?: true;
+    fingerprint?: true;
+    createdAt?: true;
+    _all?: true;
+};
+export type DealHealthVoteAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which DealHealthVote to aggregate.
+     */
+    where?: Prisma.DealHealthVoteWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of DealHealthVotes to fetch.
+     */
+    orderBy?: Prisma.DealHealthVoteOrderByWithRelationInput | Prisma.DealHealthVoteOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: Prisma.DealHealthVoteWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` DealHealthVotes from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` DealHealthVotes.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned DealHealthVotes
+    **/
+    _count?: true | DealHealthVoteCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: DealHealthVoteAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: DealHealthVoteSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: DealHealthVoteMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: DealHealthVoteMaxAggregateInputType;
+};
+export type GetDealHealthVoteAggregateType<T extends DealHealthVoteAggregateArgs> = {
+    [P in keyof T & keyof AggregateDealHealthVote]: P extends '_count' | 'count' ? T[P] extends true ? number : Prisma.GetScalarType<T[P], AggregateDealHealthVote[P]> : Prisma.GetScalarType<T[P], AggregateDealHealthVote[P]>;
+};
+export type DealHealthVoteGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.DealHealthVoteWhereInput;
+    orderBy?: Prisma.DealHealthVoteOrderByWithAggregationInput | Prisma.DealHealthVoteOrderByWithAggregationInput[];
+    by: Prisma.DealHealthVoteScalarFieldEnum[] | Prisma.DealHealthVoteScalarFieldEnum;
+    having?: Prisma.DealHealthVoteScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: DealHealthVoteCountAggregateInputType | true;
+    _avg?: DealHealthVoteAvgAggregateInputType;
+    _sum?: DealHealthVoteSumAggregateInputType;
+    _min?: DealHealthVoteMinAggregateInputType;
+    _max?: DealHealthVoteMaxAggregateInputType;
+};
+export type DealHealthVoteGroupByOutputType = {
+    id: number;
+    productSlug: string;
+    vote: string;
+    fingerprint: string | null;
+    createdAt: Date | null;
+    _count: DealHealthVoteCountAggregateOutputType | null;
+    _avg: DealHealthVoteAvgAggregateOutputType | null;
+    _sum: DealHealthVoteSumAggregateOutputType | null;
+    _min: DealHealthVoteMinAggregateOutputType | null;
+    _max: DealHealthVoteMaxAggregateOutputType | null;
+};
+export type GetDealHealthVoteGroupByPayload<T extends DealHealthVoteGroupByArgs> = Prisma.PrismaPromise<Array<Prisma.PickEnumerable<DealHealthVoteGroupByOutputType, T['by']> & {
+    [P in ((keyof T) & (keyof DealHealthVoteGroupByOutputType))]: P extends '_count' ? T[P] extends boolean ? number : Prisma.GetScalarType<T[P], DealHealthVoteGroupByOutputType[P]> : Prisma.GetScalarType<T[P], DealHealthVoteGroupByOutputType[P]>;
+}>>;
+export type DealHealthVoteWhereInput = {
+    AND?: Prisma.DealHealthVoteWhereInput | Prisma.DealHealthVoteWhereInput[];
+    OR?: Prisma.DealHealthVoteWhereInput[];
+    NOT?: Prisma.DealHealthVoteWhereInput | Prisma.DealHealthVoteWhereInput[];
+    id?: Prisma.IntFilter<"DealHealthVote"> | number;
+    productSlug?: Prisma.StringFilter<"DealHealthVote"> | string;
+    vote?: Prisma.StringFilter<"DealHealthVote"> | string;
+    fingerprint?: Prisma.StringNullableFilter<"DealHealthVote"> | string | null;
+    createdAt?: Prisma.DateTimeNullableFilter<"DealHealthVote"> | Date | string | null;
+};
+export type DealHealthVoteOrderByWithRelationInput = {
+    id?: Prisma.SortOrder;
+    productSlug?: Prisma.SortOrder;
+    vote?: Prisma.SortOrder;
+    fingerprint?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+};
+export type DealHealthVoteWhereUniqueInput = Prisma.AtLeast<{
+    id?: number;
+    AND?: Prisma.DealHealthVoteWhereInput | Prisma.DealHealthVoteWhereInput[];
+    OR?: Prisma.DealHealthVoteWhereInput[];
+    NOT?: Prisma.DealHealthVoteWhereInput | Prisma.DealHealthVoteWhereInput[];
+    productSlug?: Prisma.StringFilter<"DealHealthVote"> | string;
+    vote?: Prisma.StringFilter<"DealHealthVote"> | string;
+    fingerprint?: Prisma.StringNullableFilter<"DealHealthVote"> | string | null;
+    createdAt?: Prisma.DateTimeNullableFilter<"DealHealthVote"> | Date | string | null;
+}, "id">;
+export type DealHealthVoteOrderByWithAggregationInput = {
+    id?: Prisma.SortOrder;
+    productSlug?: Prisma.SortOrder;
+    vote?: Prisma.SortOrder;
+    fingerprint?: Prisma.SortOrderInput | Prisma.SortOrder;
+    createdAt?: Prisma.SortOrderInput | Prisma.SortOrder;
+    _count?: Prisma.DealHealthVoteCountOrderByAggregateInput;
+    _avg?: Prisma.DealHealthVoteAvgOrderByAggregateInput;
+    _max?: Prisma.DealHealthVoteMaxOrderByAggregateInput;
+    _min?: Prisma.DealHealthVoteMinOrderByAggregateInput;
+    _sum?: Prisma.DealHealthVoteSumOrderByAggregateInput;
+};
+export type DealHealthVoteScalarWhereWithAggregatesInput = {
+    AND?: Prisma.DealHealthVoteScalarWhereWithAggregatesInput | Prisma.DealHealthVoteScalarWhereWithAggregatesInput[];
+    OR?: Prisma.DealHealthVoteScalarWhereWithAggregatesInput[];
+    NOT?: Prisma.DealHealthVoteScalarWhereWithAggregatesInput | Prisma.DealHealthVoteScalarWhereWithAggregatesInput[];
+    id?: Prisma.IntWithAggregatesFilter<"DealHealthVote"> | number;
+    productSlug?: Prisma.StringWithAggregatesFilter<"DealHealthVote"> | string;
+    vote?: Prisma.StringWithAggregatesFilter<"DealHealthVote"> | string;
+    fingerprint?: Prisma.StringNullableWithAggregatesFilter<"DealHealthVote"> | string | null;
+    createdAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DealHealthVote"> | Date | string | null;
+};
+export type DealHealthVoteCreateInput = {
+    productSlug: string;
+    vote: string;
+    fingerprint?: string | null;
+    createdAt?: Date | string | null;
+};
+export type DealHealthVoteUncheckedCreateInput = {
+    id?: number;
+    productSlug: string;
+    vote: string;
+    fingerprint?: string | null;
+    createdAt?: Date | string | null;
+};
+export type DealHealthVoteUpdateInput = {
+    productSlug?: Prisma.StringFieldUpdateOperationsInput | string;
+    vote?: Prisma.StringFieldUpdateOperationsInput | string;
+    fingerprint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type DealHealthVoteUncheckedUpdateInput = {
+    id?: Prisma.IntFieldUpdateOperationsInput | number;
+    productSlug?: Prisma.StringFieldUpdateOperationsInput | string;
+    vote?: Prisma.StringFieldUpdateOperationsInput | string;
+    fingerprint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type DealHealthVoteCreateManyInput = {
+    id?: number;
+    productSlug: string;
+    vote: string;
+    fingerprint?: string | null;
+    createdAt?: Date | string | null;
+};
+export type DealHealthVoteUpdateManyMutationInput = {
+    productSlug?: Prisma.StringFieldUpdateOperationsInput | string;
+    vote?: Prisma.StringFieldUpdateOperationsInput | string;
+    fingerprint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type DealHealthVoteUncheckedUpdateManyInput = {
+    id?: Prisma.IntFieldUpdateOperationsInput | number;
+    productSlug?: Prisma.StringFieldUpdateOperationsInput | string;
+    vote?: Prisma.StringFieldUpdateOperationsInput | string;
+    fingerprint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null;
+};
+export type DealHealthVoteCountOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    productSlug?: Prisma.SortOrder;
+    vote?: Prisma.SortOrder;
+    fingerprint?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+};
+export type DealHealthVoteAvgOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+};
+export type DealHealthVoteMaxOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    productSlug?: Prisma.SortOrder;
+    vote?: Prisma.SortOrder;
+    fingerprint?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+};
+export type DealHealthVoteMinOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+    productSlug?: Prisma.SortOrder;
+    vote?: Prisma.SortOrder;
+    fingerprint?: Prisma.SortOrder;
+    createdAt?: Prisma.SortOrder;
+};
+export type DealHealthVoteSumOrderByAggregateInput = {
+    id?: Prisma.SortOrder;
+};
+export type DealHealthVoteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    productSlug?: boolean;
+    vote?: boolean;
+    fingerprint?: boolean;
+    createdAt?: boolean;
+}, ExtArgs["result"]["dealHealthVote"]>;
+export type DealHealthVoteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    productSlug?: boolean;
+    vote?: boolean;
+    fingerprint?: boolean;
+    createdAt?: boolean;
+}, ExtArgs["result"]["dealHealthVote"]>;
+export type DealHealthVoteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean;
+    productSlug?: boolean;
+    vote?: boolean;
+    fingerprint?: boolean;
+    createdAt?: boolean;
+}, ExtArgs["result"]["dealHealthVote"]>;
+export type DealHealthVoteSelectScalar = {
+    id?: boolean;
+    productSlug?: boolean;
+    vote?: boolean;
+    fingerprint?: boolean;
+    createdAt?: boolean;
+};
+export type DealHealthVoteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "productSlug" | "vote" | "fingerprint" | "createdAt", ExtArgs["result"]["dealHealthVote"]>;
+export type $DealHealthVotePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "DealHealthVote";
+    objects: {};
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+        id: number;
+        productSlug: string;
+        vote: string;
+        fingerprint: string | null;
+        createdAt: Date | null;
+    }, ExtArgs["result"]["dealHealthVote"]>;
+    composites: {};
+};
+export type DealHealthVoteGetPayload<S extends boolean | null | undefined | DealHealthVoteDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$DealHealthVotePayload, S>;
+export type DealHealthVoteCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = Omit<DealHealthVoteFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: DealHealthVoteCountAggregateInputType | true;
+};
+export interface DealHealthVoteDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: {
+        types: Prisma.TypeMap<ExtArgs>['model']['DealHealthVote'];
+        meta: {
+            name: 'DealHealthVote';
+        };
+    };
+    /**
+     * Find zero or one DealHealthVote that matches the filter.
+     * @param {DealHealthVoteFindUniqueArgs} args - Arguments to find a DealHealthVote
+     * @example
+     * // Get one DealHealthVote
+     * const dealHealthVote = await prisma.dealHealthVote.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DealHealthVoteFindUniqueArgs>(args: Prisma.SelectSubset<T, DealHealthVoteFindUniqueArgs<ExtArgs>>): Prisma.Prisma__DealHealthVoteClient<runtime.Types.Result.GetResult<Prisma.$DealHealthVotePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find one DealHealthVote that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DealHealthVoteFindUniqueOrThrowArgs} args - Arguments to find a DealHealthVote
+     * @example
+     * // Get one DealHealthVote
+     * const dealHealthVote = await prisma.dealHealthVote.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DealHealthVoteFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, DealHealthVoteFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__DealHealthVoteClient<runtime.Types.Result.GetResult<Prisma.$DealHealthVotePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first DealHealthVote that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealHealthVoteFindFirstArgs} args - Arguments to find a DealHealthVote
+     * @example
+     * // Get one DealHealthVote
+     * const dealHealthVote = await prisma.dealHealthVote.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DealHealthVoteFindFirstArgs>(args?: Prisma.SelectSubset<T, DealHealthVoteFindFirstArgs<ExtArgs>>): Prisma.Prisma__DealHealthVoteClient<runtime.Types.Result.GetResult<Prisma.$DealHealthVotePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find the first DealHealthVote that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealHealthVoteFindFirstOrThrowArgs} args - Arguments to find a DealHealthVote
+     * @example
+     * // Get one DealHealthVote
+     * const dealHealthVote = await prisma.dealHealthVote.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DealHealthVoteFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, DealHealthVoteFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__DealHealthVoteClient<runtime.Types.Result.GetResult<Prisma.$DealHealthVotePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Find zero or more DealHealthVotes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealHealthVoteFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DealHealthVotes
+     * const dealHealthVotes = await prisma.dealHealthVote.findMany()
+     *
+     * // Get first 10 DealHealthVotes
+     * const dealHealthVotes = await prisma.dealHealthVote.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const dealHealthVoteWithIdOnly = await prisma.dealHealthVote.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends DealHealthVoteFindManyArgs>(args?: Prisma.SelectSubset<T, DealHealthVoteFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DealHealthVotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>;
+    /**
+     * Create a DealHealthVote.
+     * @param {DealHealthVoteCreateArgs} args - Arguments to create a DealHealthVote.
+     * @example
+     * // Create one DealHealthVote
+     * const DealHealthVote = await prisma.dealHealthVote.create({
+     *   data: {
+     *     // ... data to create a DealHealthVote
+     *   }
+     * })
+     *
+     */
+    create<T extends DealHealthVoteCreateArgs>(args: Prisma.SelectSubset<T, DealHealthVoteCreateArgs<ExtArgs>>): Prisma.Prisma__DealHealthVoteClient<runtime.Types.Result.GetResult<Prisma.$DealHealthVotePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Create many DealHealthVotes.
+     * @param {DealHealthVoteCreateManyArgs} args - Arguments to create many DealHealthVotes.
+     * @example
+     * // Create many DealHealthVotes
+     * const dealHealthVote = await prisma.dealHealthVote.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends DealHealthVoteCreateManyArgs>(args?: Prisma.SelectSubset<T, DealHealthVoteCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Create many DealHealthVotes and returns the data saved in the database.
+     * @param {DealHealthVoteCreateManyAndReturnArgs} args - Arguments to create many DealHealthVotes.
+     * @example
+     * // Create many DealHealthVotes
+     * const dealHealthVote = await prisma.dealHealthVote.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many DealHealthVotes and only return the `id`
+     * const dealHealthVoteWithIdOnly = await prisma.dealHealthVote.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends DealHealthVoteCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, DealHealthVoteCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DealHealthVotePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Delete a DealHealthVote.
+     * @param {DealHealthVoteDeleteArgs} args - Arguments to delete one DealHealthVote.
+     * @example
+     * // Delete one DealHealthVote
+     * const DealHealthVote = await prisma.dealHealthVote.delete({
+     *   where: {
+     *     // ... filter to delete one DealHealthVote
+     *   }
+     * })
+     *
+     */
+    delete<T extends DealHealthVoteDeleteArgs>(args: Prisma.SelectSubset<T, DealHealthVoteDeleteArgs<ExtArgs>>): Prisma.Prisma__DealHealthVoteClient<runtime.Types.Result.GetResult<Prisma.$DealHealthVotePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Update one DealHealthVote.
+     * @param {DealHealthVoteUpdateArgs} args - Arguments to update one DealHealthVote.
+     * @example
+     * // Update one DealHealthVote
+     * const dealHealthVote = await prisma.dealHealthVote.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends DealHealthVoteUpdateArgs>(args: Prisma.SelectSubset<T, DealHealthVoteUpdateArgs<ExtArgs>>): Prisma.Prisma__DealHealthVoteClient<runtime.Types.Result.GetResult<Prisma.$DealHealthVotePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Delete zero or more DealHealthVotes.
+     * @param {DealHealthVoteDeleteManyArgs} args - Arguments to filter DealHealthVotes to delete.
+     * @example
+     * // Delete a few DealHealthVotes
+     * const { count } = await prisma.dealHealthVote.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends DealHealthVoteDeleteManyArgs>(args?: Prisma.SelectSubset<T, DealHealthVoteDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more DealHealthVotes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealHealthVoteUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DealHealthVotes
+     * const dealHealthVote = await prisma.dealHealthVote.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends DealHealthVoteUpdateManyArgs>(args: Prisma.SelectSubset<T, DealHealthVoteUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>;
+    /**
+     * Update zero or more DealHealthVotes and returns the data updated in the database.
+     * @param {DealHealthVoteUpdateManyAndReturnArgs} args - Arguments to update many DealHealthVotes.
+     * @example
+     * // Update many DealHealthVotes
+     * const dealHealthVote = await prisma.dealHealthVote.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more DealHealthVotes and only return the `id`
+     * const dealHealthVoteWithIdOnly = await prisma.dealHealthVote.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends DealHealthVoteUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, DealHealthVoteUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DealHealthVotePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>;
+    /**
+     * Create or update one DealHealthVote.
+     * @param {DealHealthVoteUpsertArgs} args - Arguments to update or create a DealHealthVote.
+     * @example
+     * // Update or create a DealHealthVote
+     * const dealHealthVote = await prisma.dealHealthVote.upsert({
+     *   create: {
+     *     // ... data to create a DealHealthVote
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DealHealthVote we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DealHealthVoteUpsertArgs>(args: Prisma.SelectSubset<T, DealHealthVoteUpsertArgs<ExtArgs>>): Prisma.Prisma__DealHealthVoteClient<runtime.Types.Result.GetResult<Prisma.$DealHealthVotePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>;
+    /**
+     * Count the number of DealHealthVotes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealHealthVoteCountArgs} args - Arguments to filter DealHealthVotes to count.
+     * @example
+     * // Count the number of DealHealthVotes
+     * const count = await prisma.dealHealthVote.count({
+     *   where: {
+     *     // ... the filter for the DealHealthVotes we want to count
+     *   }
+     * })
+    **/
+    count<T extends DealHealthVoteCountArgs>(args?: Prisma.Subset<T, DealHealthVoteCountArgs>): Prisma.PrismaPromise<T extends runtime.Types.Utils.Record<'select', any> ? T['select'] extends true ? number : Prisma.GetScalarType<T['select'], DealHealthVoteCountAggregateOutputType> : number>;
+    /**
+     * Allows you to perform aggregations operations on a DealHealthVote.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealHealthVoteAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DealHealthVoteAggregateArgs>(args: Prisma.Subset<T, DealHealthVoteAggregateArgs>): Prisma.PrismaPromise<GetDealHealthVoteAggregateType<T>>;
+    /**
+     * Group by DealHealthVote.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealHealthVoteGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<T extends DealHealthVoteGroupByArgs, HasSelectOrTake extends Prisma.Or<Prisma.Extends<'skip', Prisma.Keys<T>>, Prisma.Extends<'take', Prisma.Keys<T>>>, OrderByArg extends Prisma.True extends HasSelectOrTake ? {
+        orderBy: DealHealthVoteGroupByArgs['orderBy'];
+    } : {
+        orderBy?: DealHealthVoteGroupByArgs['orderBy'];
+    }, OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>, ByFields extends Prisma.MaybeTupleToUnion<T['by']>, ByValid extends Prisma.Has<ByFields, OrderFields>, HavingFields extends Prisma.GetHavingFields<T['having']>, HavingValid extends Prisma.Has<ByFields, HavingFields>, ByEmpty extends T['by'] extends never[] ? Prisma.True : Prisma.False, InputErrors extends ByEmpty extends Prisma.True ? `Error: "by" must not be empty.` : HavingValid extends Prisma.False ? {
+        [P in HavingFields]: P extends ByFields ? never : P extends string ? `Error: Field "${P}" used in "having" needs to be provided in "by".` : [
+            Error,
+            'Field ',
+            P,
+            ` in "having" needs to be provided in "by"`
+        ];
+    }[HavingFields] : 'take' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "take", you also need to provide "orderBy"' : 'skip' extends Prisma.Keys<T> ? 'orderBy' extends Prisma.Keys<T> ? ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields] : 'Error: If you provide "skip", you also need to provide "orderBy"' : ByValid extends Prisma.True ? {} : {
+        [P in OrderFields]: P extends ByFields ? never : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+    }[OrderFields]>(args: Prisma.SubsetIntersection<T, DealHealthVoteGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDealHealthVoteGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the DealHealthVote model
+     */
+    readonly fields: DealHealthVoteFieldRefs;
+}
+/**
+ * The delegate class that acts as a "Promise-like" for DealHealthVote.
+ * Why is this prefixed with `Prisma__`?
+ * Because we want to prevent naming conflicts as mentioned in
+ * https://github.com/prisma/prisma-client-js/issues/707
+ */
+export interface Prisma__DealHealthVoteClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise";
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
+}
+/**
+ * Fields of the DealHealthVote model
+ */
+export interface DealHealthVoteFieldRefs {
+    readonly id: Prisma.FieldRef<"DealHealthVote", 'Int'>;
+    readonly productSlug: Prisma.FieldRef<"DealHealthVote", 'String'>;
+    readonly vote: Prisma.FieldRef<"DealHealthVote", 'String'>;
+    readonly fingerprint: Prisma.FieldRef<"DealHealthVote", 'String'>;
+    readonly createdAt: Prisma.FieldRef<"DealHealthVote", 'DateTime'>;
+}
+/**
+ * DealHealthVote findUnique
+ */
+export type DealHealthVoteFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealHealthVote
+     */
+    select?: Prisma.DealHealthVoteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DealHealthVote
+     */
+    omit?: Prisma.DealHealthVoteOmit<ExtArgs> | null;
+    /**
+     * Filter, which DealHealthVote to fetch.
+     */
+    where: Prisma.DealHealthVoteWhereUniqueInput;
+};
+/**
+ * DealHealthVote findUniqueOrThrow
+ */
+export type DealHealthVoteFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealHealthVote
+     */
+    select?: Prisma.DealHealthVoteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DealHealthVote
+     */
+    omit?: Prisma.DealHealthVoteOmit<ExtArgs> | null;
+    /**
+     * Filter, which DealHealthVote to fetch.
+     */
+    where: Prisma.DealHealthVoteWhereUniqueInput;
+};
+/**
+ * DealHealthVote findFirst
+ */
+export type DealHealthVoteFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealHealthVote
+     */
+    select?: Prisma.DealHealthVoteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DealHealthVote
+     */
+    omit?: Prisma.DealHealthVoteOmit<ExtArgs> | null;
+    /**
+     * Filter, which DealHealthVote to fetch.
+     */
+    where?: Prisma.DealHealthVoteWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of DealHealthVotes to fetch.
+     */
+    orderBy?: Prisma.DealHealthVoteOrderByWithRelationInput | Prisma.DealHealthVoteOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for DealHealthVotes.
+     */
+    cursor?: Prisma.DealHealthVoteWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` DealHealthVotes from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` DealHealthVotes.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of DealHealthVotes.
+     */
+    distinct?: Prisma.DealHealthVoteScalarFieldEnum | Prisma.DealHealthVoteScalarFieldEnum[];
+};
+/**
+ * DealHealthVote findFirstOrThrow
+ */
+export type DealHealthVoteFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealHealthVote
+     */
+    select?: Prisma.DealHealthVoteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DealHealthVote
+     */
+    omit?: Prisma.DealHealthVoteOmit<ExtArgs> | null;
+    /**
+     * Filter, which DealHealthVote to fetch.
+     */
+    where?: Prisma.DealHealthVoteWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of DealHealthVotes to fetch.
+     */
+    orderBy?: Prisma.DealHealthVoteOrderByWithRelationInput | Prisma.DealHealthVoteOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for DealHealthVotes.
+     */
+    cursor?: Prisma.DealHealthVoteWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` DealHealthVotes from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` DealHealthVotes.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of DealHealthVotes.
+     */
+    distinct?: Prisma.DealHealthVoteScalarFieldEnum | Prisma.DealHealthVoteScalarFieldEnum[];
+};
+/**
+ * DealHealthVote findMany
+ */
+export type DealHealthVoteFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealHealthVote
+     */
+    select?: Prisma.DealHealthVoteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DealHealthVote
+     */
+    omit?: Prisma.DealHealthVoteOmit<ExtArgs> | null;
+    /**
+     * Filter, which DealHealthVotes to fetch.
+     */
+    where?: Prisma.DealHealthVoteWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of DealHealthVotes to fetch.
+     */
+    orderBy?: Prisma.DealHealthVoteOrderByWithRelationInput | Prisma.DealHealthVoteOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing DealHealthVotes.
+     */
+    cursor?: Prisma.DealHealthVoteWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` DealHealthVotes from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` DealHealthVotes.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of DealHealthVotes.
+     */
+    distinct?: Prisma.DealHealthVoteScalarFieldEnum | Prisma.DealHealthVoteScalarFieldEnum[];
+};
+/**
+ * DealHealthVote create
+ */
+export type DealHealthVoteCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealHealthVote
+     */
+    select?: Prisma.DealHealthVoteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DealHealthVote
+     */
+    omit?: Prisma.DealHealthVoteOmit<ExtArgs> | null;
+    /**
+     * The data needed to create a DealHealthVote.
+     */
+    data: Prisma.XOR<Prisma.DealHealthVoteCreateInput, Prisma.DealHealthVoteUncheckedCreateInput>;
+};
+/**
+ * DealHealthVote createMany
+ */
+export type DealHealthVoteCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DealHealthVotes.
+     */
+    data: Prisma.DealHealthVoteCreateManyInput | Prisma.DealHealthVoteCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * DealHealthVote createManyAndReturn
+ */
+export type DealHealthVoteCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealHealthVote
+     */
+    select?: Prisma.DealHealthVoteSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DealHealthVote
+     */
+    omit?: Prisma.DealHealthVoteOmit<ExtArgs> | null;
+    /**
+     * The data used to create many DealHealthVotes.
+     */
+    data: Prisma.DealHealthVoteCreateManyInput | Prisma.DealHealthVoteCreateManyInput[];
+    skipDuplicates?: boolean;
+};
+/**
+ * DealHealthVote update
+ */
+export type DealHealthVoteUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealHealthVote
+     */
+    select?: Prisma.DealHealthVoteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DealHealthVote
+     */
+    omit?: Prisma.DealHealthVoteOmit<ExtArgs> | null;
+    /**
+     * The data needed to update a DealHealthVote.
+     */
+    data: Prisma.XOR<Prisma.DealHealthVoteUpdateInput, Prisma.DealHealthVoteUncheckedUpdateInput>;
+    /**
+     * Choose, which DealHealthVote to update.
+     */
+    where: Prisma.DealHealthVoteWhereUniqueInput;
+};
+/**
+ * DealHealthVote updateMany
+ */
+export type DealHealthVoteUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DealHealthVotes.
+     */
+    data: Prisma.XOR<Prisma.DealHealthVoteUpdateManyMutationInput, Prisma.DealHealthVoteUncheckedUpdateManyInput>;
+    /**
+     * Filter which DealHealthVotes to update
+     */
+    where?: Prisma.DealHealthVoteWhereInput;
+    /**
+     * Limit how many DealHealthVotes to update.
+     */
+    limit?: number;
+};
+/**
+ * DealHealthVote updateManyAndReturn
+ */
+export type DealHealthVoteUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealHealthVote
+     */
+    select?: Prisma.DealHealthVoteSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DealHealthVote
+     */
+    omit?: Prisma.DealHealthVoteOmit<ExtArgs> | null;
+    /**
+     * The data used to update DealHealthVotes.
+     */
+    data: Prisma.XOR<Prisma.DealHealthVoteUpdateManyMutationInput, Prisma.DealHealthVoteUncheckedUpdateManyInput>;
+    /**
+     * Filter which DealHealthVotes to update
+     */
+    where?: Prisma.DealHealthVoteWhereInput;
+    /**
+     * Limit how many DealHealthVotes to update.
+     */
+    limit?: number;
+};
+/**
+ * DealHealthVote upsert
+ */
+export type DealHealthVoteUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealHealthVote
+     */
+    select?: Prisma.DealHealthVoteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DealHealthVote
+     */
+    omit?: Prisma.DealHealthVoteOmit<ExtArgs> | null;
+    /**
+     * The filter to search for the DealHealthVote to update in case it exists.
+     */
+    where: Prisma.DealHealthVoteWhereUniqueInput;
+    /**
+     * In case the DealHealthVote found by the `where` argument doesn't exist, create a new DealHealthVote with this data.
+     */
+    create: Prisma.XOR<Prisma.DealHealthVoteCreateInput, Prisma.DealHealthVoteUncheckedCreateInput>;
+    /**
+     * In case the DealHealthVote was found with the provided `where` argument, update it with this data.
+     */
+    update: Prisma.XOR<Prisma.DealHealthVoteUpdateInput, Prisma.DealHealthVoteUncheckedUpdateInput>;
+};
+/**
+ * DealHealthVote delete
+ */
+export type DealHealthVoteDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealHealthVote
+     */
+    select?: Prisma.DealHealthVoteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DealHealthVote
+     */
+    omit?: Prisma.DealHealthVoteOmit<ExtArgs> | null;
+    /**
+     * Filter which DealHealthVote to delete.
+     */
+    where: Prisma.DealHealthVoteWhereUniqueInput;
+};
+/**
+ * DealHealthVote deleteMany
+ */
+export type DealHealthVoteDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which DealHealthVotes to delete
+     */
+    where?: Prisma.DealHealthVoteWhereInput;
+    /**
+     * Limit how many DealHealthVotes to delete.
+     */
+    limit?: number;
+};
+/**
+ * DealHealthVote without action
+ */
+export type DealHealthVoteDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealHealthVote
+     */
+    select?: Prisma.DealHealthVoteSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the DealHealthVote
+     */
+    omit?: Prisma.DealHealthVoteOmit<ExtArgs> | null;
+};
+//# sourceMappingURL=DealHealthVote.d.ts.map

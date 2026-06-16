@@ -57,6 +57,24 @@ const jobsRoute: FastifyPluginAsync = async (fastify) => {
     return reply.send({ queues: results })
   })
 
+  fastify.get<{ Params: { queue: string; jobId: string } }>(
+    '/api/admin/jobs/:queue/:jobId/logs',
+    { preHandler: requireApiSecret },
+    async (request, reply) => {
+      const { queue, jobId } = request.params
+      if (!['feed-import', 'housekeeping', 'sync'].includes(queue)) {
+        return reply.code(400).send({ error: `Unknown queue: ${queue}` })
+      }
+      const q = queue === 'feed-import' ? feedImportQueue
+               : queue === 'housekeeping' ? housekeepingQueue
+               : syncQueue
+      const job = await q.getJob(jobId)
+      if (!job) return reply.code(404).send({ error: 'Job not found' })
+      const { logs } = await q.getJobLogs(jobId, 0, 200)
+      return reply.send({ logs })
+    }
+  )
+
   fastify.post<{ Body: { jobId: string; queue: string } }>(
     '/api/admin/jobs/retry',
     { preHandler: requireApiSecret },

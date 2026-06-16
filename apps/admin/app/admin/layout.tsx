@@ -39,7 +39,21 @@ export default function AdminLayout({
         {children}
       </div>
 
-      <Toaster position="bottom-right" theme="dark" />
+      <Toaster
+        position="top-center"
+        theme="dark"
+        toastOptions={{
+          classNames: {
+            success:
+              "!bg-emerald-950 !border-emerald-700 !text-emerald-200 [&>[data-icon]]:!text-emerald-400",
+            error:
+              "!bg-red-950 !border-red-700 !text-red-200 [&>[data-icon]]:!text-red-400",
+            warning:
+              "!bg-amber-950 !border-amber-700 !text-amber-200 [&>[data-icon]]:!text-amber-400",
+            info: "!bg-sky-950 !border-sky-700 !text-sky-200 [&>[data-icon]]:!text-sky-400",
+          },
+        }}
+      />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import type { FeedRow, FeedStats, SortBy } from "./types";
 import { FeedStatsBar } from "./feed-stats-bar";
 import { FeedTable } from "./feed-table";
 import { FeedImportGrid } from "./feed-import-grid";
+import { FeedCsvUpload } from "./feed-csv-upload";
 
 export default function FeedsPage() {
   const [feedsData, setFeedsData] = useState<{
@@ -125,31 +126,6 @@ export default function FeedsPage() {
     setBatchProgress({ current: 0, total: 0, currentFeed: "" });
   };
 
-  const uploadCSV = async (text: string) => {
-    setFeedsLoading(true);
-    try {
-      const res = await fetch("/api/admin/import-feeds", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ csvText: text }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        toast.success(
-          `Imported ${data.imported} new feeds, updated ${data.updated} existing`,
-        );
-        await loadFeeds();
-      } else {
-        toast.error(`Error: ${data.error}`);
-        throw new Error(data.error);
-      }
-    } catch (e: any) {
-      toast.error(`Error: ${e.message}`);
-    } finally {
-      setFeedsLoading(false);
-    }
-  };
-
   const sortedFilteredFeeds =
     feedsData?.feeds
       ?.filter(
@@ -180,6 +156,8 @@ export default function FeedsPage() {
     <div className="space-y-6">
       {feedsData?.stats && <FeedStatsBar stats={feedsData.stats} />}
 
+      <FeedCsvUpload onSuccess={loadFeeds} />
+
       <FeedImportGrid
         feeds={sortedFilteredFeeds}
         selectedIds={selectedFeedIds}
@@ -201,7 +179,6 @@ export default function FeedsPage() {
         onSortChange={setFeedsSortBy}
         onFilterChange={setFeedsFilterCountry}
         onRefresh={loadFeeds}
-        onUploadCSV={uploadCSV}
       />
     </div>
   );

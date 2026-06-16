@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 const PIPELINE_STEPS = [
   "1. Fetch Feeds",
@@ -31,6 +32,10 @@ export const DailySyncWidget = ({ onMessage }: Props) => {
     setSyncLogLoading(false);
   };
 
+  useEffect(() => {
+    loadSyncLog();
+  }, []);
+
   const runNow = async () => {
     if (
       !confirm(
@@ -60,8 +65,8 @@ export const DailySyncWidget = ({ onMessage }: Props) => {
           <h3 className="text-lg font-bold mb-1">Daily Sync</h3>
           <p className="text-sm text-neutral-400">
             Runs automatically every day at{" "}
-            <span className="text-white font-medium">10:30 PM PST</span>{" "}
-            (6:30 AM UTC). Imports all feeds, hides stale products, fixes
+            <span className="text-white font-medium">10:30 PM PST</span> (6:30
+            AM UTC). Imports all feeds, hides stale products, fixes
             gender/grouping, and promotes to live.
           </p>
         </div>
@@ -98,10 +103,29 @@ export const DailySyncWidget = ({ onMessage }: Props) => {
         ))}
       </div>
 
-      {syncLog.length === 0 && !syncLogLoading ? (
+      {syncLogLoading ? (
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs">
+            <thead className="bg-neutral-800 text-neutral-400">
+              <tr>
+                <th className="px-3 py-2 text-left">Date</th>
+                <th className="px-3 py-2 text-right">Feeds</th>
+                <th className="px-3 py-2 text-right">Imported</th>
+                <th className="px-3 py-2 text-right">Stale Hidden</th>
+                <th className="px-3 py-2 text-right">Duration</th>
+                <th className="px-3 py-2 text-right">Errors</th>
+              </tr>
+            </thead>
+            <TableSkeleton rows={5} cols={6} />
+          </table>
+        </div>
+      ) : syncLog.length === 0 ? (
         <p className="text-sm text-neutral-500 text-center py-4">
           No sync history yet.{" "}
-          <button onClick={loadSyncLog} className="text-blue-400 hover:underline">
+          <button
+            onClick={loadSyncLog}
+            className="text-blue-400 hover:underline"
+          >
             Load history
           </button>
         </p>
@@ -142,7 +166,9 @@ export const DailySyncWidget = ({ onMessage }: Props) => {
                   <td className="px-3 py-2 text-right">
                     <span
                       className={
-                        row.error_count > 0 ? "text-red-400" : "text-neutral-500"
+                        row.error_count > 0
+                          ? "text-red-400"
+                          : "text-neutral-500"
                       }
                     >
                       {row.error_count}

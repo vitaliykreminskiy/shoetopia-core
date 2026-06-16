@@ -9,4 +9,14 @@ await import("./workers/feed-import.worker.js");
 await import("./workers/housekeeping.worker.js");
 await import("./workers/sync.worker.js");
 
+import { syncQueue } from "@shoetopia/jobs";
+import { randomUUID } from "node:crypto";
+
+// Daily sync at 06:30 UTC (10:30 PM PST)
+await syncQueue.add(
+  "daily-sync",
+  { runId: randomUUID(), runStartedAt: new Date().toISOString() },
+  { repeat: { pattern: "30 6 * * *" } },
+);
+
 console.log("[workers] feed-import, housekeeping, sync workers started");

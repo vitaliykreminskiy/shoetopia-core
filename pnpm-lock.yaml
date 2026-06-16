@@ -121,9 +121,12 @@ importers:
 
   apps/worker:
     dependencies:
-      '@shoetopia/api':
+      '@shoetopia/db':
         specifier: workspace:*
-        version: link:../api
+        version: link:../../packages/db
+      '@shoetopia/jobs':
+        specifier: workspace:*
+        version: link:../../packages/jobs
       bullmq:
         specifier: ^5.0.0
         version: 5.76.10
@@ -140,6 +143,9 @@ importers:
       typescript:
         specifier: ^5.4.5
         version: 5.9.3
+      vitest:
+        specifier: ^2.0.0
+        version: 2.1.9(@types/node@22.19.19)(lightningcss@1.32.0)
 
   packages/db:
     dependencies:
