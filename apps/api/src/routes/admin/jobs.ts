@@ -23,6 +23,7 @@ const jobsRoute: FastifyPluginAsync = async (fastify) => {
           active: active.map(j => ({
             id: String(j.id),
             name: j.name,
+            queue: name,
             data: j.data,
             progress: typeof j.progress === 'number' ? j.progress : 0,
             processedOn: j.processedOn ?? null,
@@ -36,6 +37,7 @@ const jobsRoute: FastifyPluginAsync = async (fastify) => {
           completed: completed.map(j => ({
             id: String(j.id),
             name: j.name,
+            queue: name,
             data: j.data,
             finishedOn: j.finishedOn ?? null,
             returnvalue: j.returnvalue,
@@ -43,6 +45,7 @@ const jobsRoute: FastifyPluginAsync = async (fastify) => {
           failed: failed.map(j => ({
             id: String(j.id),
             name: j.name,
+            queue: name,
             data: j.data,
             failedReason: j.failedReason,
             attemptsMade: j.attemptsMade,

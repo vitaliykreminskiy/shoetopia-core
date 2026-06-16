@@ -1,6 +1,7 @@
 export interface ActiveJob {
   id: string
   name: string
+  queue: string
   data: Record<string, any>
   progress: number
   processedOn: number | null
@@ -15,6 +16,7 @@ export interface WaitingJob {
 export interface CompletedJob {
   id: string
   name: string
+  queue: string
   data: Record<string, any>
   finishedOn: number | null
   returnvalue: any
@@ -23,6 +25,7 @@ export interface CompletedJob {
 export interface FailedJob {
   id: string
   name: string
+  queue: string
   data: Record<string, any>
   failedReason: string
   attemptsMade: number
