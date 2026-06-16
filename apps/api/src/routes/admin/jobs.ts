@@ -12,12 +12,14 @@ const jobsRoute: FastifyPluginAsync = async (fastify) => {
 
     const results = await Promise.all(
       queues.map(async ({ name, q }) => {
-        const [active, waiting, completed, failed] = await Promise.all([
+        const [active, waiting, delayed, completed, failed] = await Promise.all([
           q.getActive(),
           q.getWaiting(),
+          q.getDelayed(),
           q.getCompleted(0, 19),
           q.getFailed(0, 19),
         ])
+        const allWaiting = [...waiting, ...delayed]
         return {
           name,
           active: active.map(j => ({
@@ -28,8 +30,8 @@ const jobsRoute: FastifyPluginAsync = async (fastify) => {
             progress: typeof j.progress === 'number' ? j.progress : 0,
             processedOn: j.processedOn ?? null,
           })),
-          waitingCount: waiting.length,
-          waiting: waiting.slice(0, 20).map(j => ({
+          waitingCount: allWaiting.length,
+          waiting: allWaiting.slice(0, 20).map(j => ({
             id: String(j.id),
             name: j.name,
             data: j.data,

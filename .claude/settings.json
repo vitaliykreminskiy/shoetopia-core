@@ -42,7 +42,19 @@
       "Read(//home/vitalii/.claude/plugins/cache/claude-plugins-official/superpowers/5.1.0/skills/requesting-code-review/**)",
       "Bash(git -C /home/vitalii/programming/shoetopia-core rev-parse HEAD)",
       "Bash(cat)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(npm ls *)",
+      "Bash(pnpm ls *)",
+      "Bash(pnpm list *)",
+      "Bash(npm list *)",
+      "Bash(pnpm exec *)",
+      "Bash(grep -E \"\\\\.ts$|\\\\.tsx$\")",
+      "Bash(pnpm test *)",
+      "Bash(git -C /home/vitalii/programming/shoetopia-core add apps/worker/src/workers/sync.worker.ts apps/worker/src/workers/__tests__/sync.test.ts)",
+      "Bash(git -C /home/vitalii/programming/shoetopia-core diff ffc03d393829021fb171bd0dd56113256a738600..HEAD -- apps/worker/src/workers/sync.worker.ts apps/worker/src/workers/__tests__/sync.test.ts)",
+      "Bash(git -C /home/vitalii/programming/shoetopia-core log --oneline -6)",
+      "Bash(git -C /home/vitalii/programming/shoetopia-core diff HEAD~5..HEAD)",
+      "Bash(pnpm --filter @shoetopia/worker test)"
     ]
   }
 }
