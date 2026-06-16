@@ -37,17 +37,24 @@ vi.mock('bullmq', async (importOriginal) => {
 })
 
 import { runDailySync } from '../sync.worker.js'
+import type { Job } from 'bullmq'
+import type { SyncJobData } from '../sync.worker.js'
+
+const makeJob = (data: SyncJobData) =>
+  ({ data, log: vi.fn().mockResolvedValue(undefined) }) as unknown as Job<SyncJobData>
 
 describe('runDailySync', () => {
   beforeEach(() => { vi.clearAllMocks() })
 
   it('enqueues import jobs for all feeds', async () => {
     const { feedImportQueue } = await import('@shoetopia/jobs')
-    await runDailySync({ runId: 'test-run', runStartedAt: new Date().toISOString() })
+    const job = makeJob({ runId: 'test-run', runStartedAt: new Date().toISOString() })
+    await runDailySync(job)
     expect(feedImportQueue.add).toHaveBeenCalledWith(
       'import-feed',
       expect.objectContaining({ feedId: 1, feedName: 'Nike' }),
       expect.any(Object),
     )
+    expect(job.log).toHaveBeenCalled()
   })
 })
