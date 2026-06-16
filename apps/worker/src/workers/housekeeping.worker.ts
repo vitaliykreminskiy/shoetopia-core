@@ -13,17 +13,29 @@ export const housekeepingWorker = new Worker<HousekeepingJob>(
     console.log(`[housekeeping] processing: ${type}`)
 
     switch (type) {
-      case 'normalize':
-        return normalizeProductIds((job.data as { type: string; programId?: number }).programId)
+      case 'normalize': {
+        const { programId } = job.data as { type: string; programId?: number }
+        await job.log(`normalizing product IDs${programId ? ` (programId: ${programId})` : ''}`)
+        await normalizeProductIds(programId)
+        await job.log(`done`)
+        return
+      }
       case 'regroup': {
         const { runStartedAt } = job.data as { type: string; runStartedAt: string }
+        await job.log(`upserting groups`)
         await upsertGroups(runStartedAt)
+        await job.log(`wiring group IDs`)
         await wireGroupIds(runStartedAt)
+        await job.log(`regroup step`)
         await regroupStep(runStartedAt)
+        await job.log(`done`)
         return
       }
       case 'hide-products':
-        return hideProducts()
+        await job.log(`hiding products`)
+        await hideProducts()
+        await job.log(`done`)
+        return
       default:
         throw new Error(`Unknown housekeeping job type: ${(job.data as any).type}`)
     }
