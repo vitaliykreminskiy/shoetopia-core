@@ -33,7 +33,7 @@ Two jobs:
 5. Push all images to ghcr.io
 
 **job: deploy** (needs: build)
-1. SSH into VPS using `SSH_PRIVATE_KEY`, `SSH_HOST`, `SSH_USER`
+1. SSH into VPS using `SHOETOPIA_SSH_PRIVATE_KEY`, `SHOETOPIA_SSH_HOST`, `SHOETOPIA_SSH_USER`
 2. Run `docker compose pull`
 3. Run `docker compose up -d`
 4. Run `docker image prune -f` to clean up old images
@@ -68,9 +68,9 @@ This ensures migrations run on every container start, including deployments.
 
 | Secret | Description |
 |--------|-------------|
-| `SSH_HOST` | VPS IP address or domain |
-| `SSH_USER` | SSH user on the VPS (e.g. `deploy`) |
-| `SSH_PRIVATE_KEY` | Private SSH key for authentication |
+| `SHOETOPIA_SSH_HOST` | VPS IP address or domain |
+| `SHOETOPIA_SSH_USER` | SSH user on the VPS (e.g. `deploy`) |
+| `SHOETOPIA_SSH_PRIVATE_KEY` | Private SSH key for authentication |
 
 `GITHUB_TOKEN` is provided automatically by GitHub Actions for ghcr.io auth.
 
