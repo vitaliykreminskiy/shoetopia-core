@@ -59,6 +59,7 @@ jobs:
 
   deploy:
     needs: build
+    permissions: {}
     runs-on: ubuntu-latest
 
     steps:
@@ -70,9 +71,10 @@ jobs:
           key: ${{ secrets.SHOETOPIA_SSH_PRIVATE_KEY }}
           envs: GITHUB_REF_NAME
           script: |
+            set -e
             cd /opt/shoetopia
             git fetch --tags
-            git checkout $GITHUB_REF_NAME
+            git reset --hard "$GITHUB_REF_NAME"
             docker compose -f docker-compose.prod.yml pull
             docker compose -f docker-compose.prod.yml up -d
             docker image prune -f
