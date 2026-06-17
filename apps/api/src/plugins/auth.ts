@@ -9,6 +9,7 @@ export async function requireApiSecret(
   if (!apiSecret) return; // no secret configured — skip auth
 
   const auth = request.headers.authorization;
+
   if (!auth || auth !== `Bearer ${apiSecret}`) {
     reply.code(401).send({ error: "Unauthorized" });
   }

@@ -4,7 +4,6 @@ import redisPlugin from "./plugins/redis.js";
 import bullBoardPlugin from "./plugins/bull-board.js";
 import { registerRoutes } from "./routes/index.js";
 import { prisma } from "@shoetopia/db";
-import { Readable } from "node:stream";
 
 const server = Fastify({
   logger: {

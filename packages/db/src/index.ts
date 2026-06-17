@@ -1,7 +1,7 @@
 import path from "node:path";
 import { config } from "dotenv";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "./generated/prisma/client";
+import { PrismaClient } from "./generated/prisma/client.js";
 
 config({ path: path.resolve(__dirname, "../../../.env"), override: false });
 
@@ -19,8 +19,8 @@ export const prisma: PrismaClient =
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
-export { Prisma } from "./generated/prisma/client";
-export type { PrismaClient } from "./generated/prisma/client";
+export { Prisma } from "./generated/prisma/client.js";
+export type { PrismaClient } from "./generated/prisma/client.js";
 
 /** Backward-compat shim for files that use rawQuery */
 export async function rawQuery<T = any>(

@@ -54,7 +54,32 @@
       "Bash(git -C /home/vitalii/programming/shoetopia-core diff ffc03d393829021fb171bd0dd56113256a738600..HEAD -- apps/worker/src/workers/sync.worker.ts apps/worker/src/workers/__tests__/sync.test.ts)",
       "Bash(git -C /home/vitalii/programming/shoetopia-core log --oneline -6)",
       "Bash(git -C /home/vitalii/programming/shoetopia-core diff HEAD~5..HEAD)",
-      "Bash(pnpm --filter @shoetopia/worker test)"
+      "Bash(pnpm --filter @shoetopia/worker test)",
+      "Bash(xargs cat)",
+      "Bash(DATABASE_URL=postgresql://x:x@x/x pnpm --filter @shoetopia/db generate)",
+      "Bash(pnpm --filter @shoetopia/db build)",
+      "Bash(git -C /home/vitalii/programming/shoetopia-core diff packages/db/tsconfig.json tsconfig.base.json)",
+      "Bash(git -C /home/vitalii/programming/shoetopia-core rev-parse --git-path sdd)",
+      "Bash(cat \"$\\(git -C /home/vitalii/programming/shoetopia-core rev-parse --git-path sdd\\)/progress.md\")",
+      "Bash(ls /home/vitalii/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.0/skills/subagent-driven-development/scripts/)",
+      "Read(//home/vitalii/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.0/skills/subagent-driven-development/scripts/**)",
+      "Bash(SKILL_DIR=/home/vitalii/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.0/skills/subagent-driven-development bash /home/vitalii/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.0/skills/subagent-driven-development/scripts/task-brief /home/vitalii/programming/shoetopia-core/docs/superpowers/plans/2026-06-17-github-actions-deploy.md 1)",
+      "Bash(docker --version)",
+      "Bash(docker build *)",
+      "Bash(bash /home/vitalii/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.0/skills/subagent-driven-development/scripts/review-package a573e7be399768e5cef8aee9db4a9f3cd2447f85 HEAD)",
+      "Bash(bash /home/vitalii/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.0/skills/subagent-driven-development/scripts/task-brief /home/vitalii/programming/shoetopia-core/docs/superpowers/plans/2026-06-17-github-actions-deploy.md 2)",
+      "Bash(docker compose *)",
+      "Bash(bash /home/vitalii/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.0/skills/subagent-driven-development/scripts/review-package 3a8053dde620a096bccb11ac1b7eeb88b9774e4f HEAD)",
+      "Bash(python3 -c \"import yaml; yaml.safe_load\\(open\\('.github/workflows/deploy.yml'\\)\\)\")",
+      "Bash(git -C /home/vitalii/programming/shoetopia-core log --oneline)",
+      "Bash(bash /home/vitalii/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.0/skills/subagent-driven-development/scripts/review-package de2c34e HEAD)",
+      "Bash(mkdir -p /home/vitalii/programming/shoetopia-core/.git/sdd)",
+      "Bash(bash /home/vitalii/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.0/skills/subagent-driven-development/scripts/review-package ee7d048 HEAD)",
+      "Bash(git -C /home/vitalii/programming/shoetopia-core show HEAD)",
+      "Bash(pnpm --filter @shoetopia/api test --passWithNoTests)"
+    ],
+    "additionalDirectories": [
+      "/home/vitalii/programming/shoetopia-core/.git/sdd"
     ]
   }
 }
