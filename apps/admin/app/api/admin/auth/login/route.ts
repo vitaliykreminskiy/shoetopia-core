@@ -9,7 +9,8 @@ const timingSafeEqual = (a: string, b: string): boolean => {
 }
 
 export async function POST(req: NextRequest) {
-  const { password } = await req.json()
+  const body = await req.json().catch(() => null)
+  const password = body?.password
   const adminSecret = process.env.ADMIN_SECRET
   const isDev = process.env.NODE_ENV === 'development'
 

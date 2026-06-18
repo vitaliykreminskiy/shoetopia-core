@@ -1,3 +1,6 @@
+// Session token wire format: `base64url(JSON payload).base64url(HMAC-SHA256 of the payload segment)`
+// where the payload is `{ exp: <ms epoch> }`.
+
 export const COOKIE_NAME = 'admin_session'
 export const SESSION_TTL_MS = 8 * 60 * 60 * 1000 // 8 hours
 
@@ -5,6 +8,8 @@ const DEV_FALLBACK_KEY = 'dev-insecure-secret'
 const encoder = new TextEncoder()
 
 export const getSigningKey = (): string | null => {
+  // Ordering is security-load-bearing: in production a missing ADMIN_SECRET MUST
+  // return null (fail closed) — never fall back to the dev key.
   const secret = process.env.ADMIN_SECRET
   if (secret) return secret
   if (process.env.NODE_ENV !== 'production') return DEV_FALLBACK_KEY

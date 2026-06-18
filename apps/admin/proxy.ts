@@ -26,6 +26,8 @@ export const proxy = async (request: NextRequest) => {
 
   // Authenticated API call: forward to the backend with the shared secret.
   if (isApi) {
+    // API_SECRET is assumed configured in production; when unset, the request is
+    // forwarded without the Bearer header (the backend then enforces its own auth).
     const apiSecret = process.env.API_SECRET
     if (!apiSecret) return NextResponse.next()
     const headers = new Headers(request.headers)
