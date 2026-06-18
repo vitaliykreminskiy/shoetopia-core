@@ -106,7 +106,8 @@
       "Bash(/home/vitalii/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.2/skills/subagent-driven-development/scripts/review-package fe9c7bd *)",
       "Bash(/home/vitalii/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.2/skills/subagent-driven-development/scripts/review-package 4d8d69b d3db187)",
       "Read(//home/vitalii/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.2/skills/requesting-code-review/**)",
-      "Bash(node -e \"console.log\\('node', process.version\\); console.log\\('btoa', typeof btoa, 'atob', typeof atob, 'crypto.subtle', typeof crypto?.subtle, 'TextEncoder', typeof TextEncoder\\)\")"
+      "Bash(node -e \"console.log\\('node', process.version\\); console.log\\('btoa', typeof btoa, 'atob', typeof atob, 'crypto.subtle', typeof crypto?.subtle, 'TextEncoder', typeof TextEncoder\\)\")",
+      "Bash(grep -vE '^\\\\s*$')"
     ],
     "additionalDirectories": [
       "/home/vitalii/programming/shoetopia-core/.git/sdd"
