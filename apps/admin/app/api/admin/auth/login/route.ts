@@ -29,7 +29,10 @@ export async function POST(req: NextRequest) {
   const res = NextResponse.json({ ok: true })
   res.cookies.set(COOKIE_NAME, await createSessionToken(), {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    // Secure only over HTTPS — set COOKIE_SECURE=true once the site has TLS.
+    // On a plain-HTTP site a Secure cookie is dropped by the browser, which
+    // would make login loop back to /admin/login.
+    secure: process.env.COOKIE_SECURE === 'true',
     sameSite: 'lax',
     maxAge: SESSION_TTL_MS / 1000,
     path: '/',

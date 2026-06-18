@@ -71,6 +71,10 @@ services:
       API_URL: http://api:3001
       ADMIN_SECRET: ${ADMIN_SECRET}
       API_SECRET: ${API_SECRET}
+      # Set to "true" once the site is served over HTTPS so the session
+      # cookie is marked Secure. Must stay "false" on plain HTTP or login
+      # will loop (browser drops a Secure cookie over HTTP).
+      COOKIE_SECURE: "false"
     depends_on:
       api:
         condition: service_healthy
