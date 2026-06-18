@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Database, ArrowLeft } from "lucide-react";
 import { TabNav } from "./TabNav";
 import { Toaster } from "sonner";
+import { SignOutButton } from "./sign-out-button";
 
 export const metadata: Metadata = {
   title: "Admin — Shoetopia",
@@ -24,12 +25,15 @@ export default function AdminLayout({
               Shoetopia Admin
             </span>
           </div>
-          <Link
-            href="/"
-            className="flex items-center gap-1 text-xs text-neutral-400 hover:text-white transition-colors"
-          >
-            <ArrowLeft size={12} /> Back to site
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/"
+              className="flex items-center gap-1 text-xs text-neutral-400 hover:text-white transition-colors"
+            >
+              <ArrowLeft size={12} /> Back to site
+            </Link>
+            <SignOutButton />
+          </div>
         </div>
       </div>
 
