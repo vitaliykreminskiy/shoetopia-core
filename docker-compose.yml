@@ -73,7 +73,7 @@ services:
     ports:
       - "3002:3002"
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
       API_URL: http://api:3001
       ADMIN_SECRET: ${ADMIN_SECRET}
       API_SECRET: ${API_SECRET}
