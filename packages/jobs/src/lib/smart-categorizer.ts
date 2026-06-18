@@ -1,3 +1,10 @@
+/*
+ * Deterministic keyword categorizer for imported products.
+ * Order is load-bearing:
+ *   - detectGender: kids → women → men ("men" is a substring of "women", so women wins first)
+ *   - categorizeProduct: Accessories → Clothing → Footwear (accessories pulled out before footwear)
+ *   - within Footwear: most-specific sub-category first (e.g. wedge before sandal)
+ */
 export interface CategorizedProduct {
   gender: string | null
   category: string

@@ -3,6 +3,20 @@ import { cached, CACHE_TTL } from '../lib/cache.js'
 import { DEFAULT_COUNTRY, isValidCountry } from '../lib/countries.js'
 import { getDataProvider } from '../dal/index.js'
 
+/*
+ * Public categories API.
+ *
+ * GET /api/categories
+ *   Query: parent_slug?  — scope to children of a slug (omit = all categories)
+ *          include_empty? — "true" includes categories with zero products
+ *   Returns: { categories: Category[], total: number }
+ *   On any error: 200 with { categories: [], total: 0 } (logged, never throws to client).
+ *
+ * GET /api/nav-categories
+ *   Query: country? — defaults to DEFAULT_COUNTRY when missing/invalid
+ *   Returns: { counts: Record<`${gender}/${category}`, number> } for live, in-stock products.
+ *   Cached per country for CACHE_TTL.LONG. On error/malformed result: 200 with { counts: {} }.
+ */
 const categoriesRoute: FastifyPluginAsync = async (fastify) => {
   // GET /api/categories — all categories with product counts
   fastify.get<{
@@ -38,6 +52,10 @@ const categoriesRoute: FastifyPluginAsync = async (fastify) => {
         return reply.send({ counts: {} })
       }
 
+      /*
+       * Key shape: "<gender>/<category>", both lowercased; spaces in category → underscores
+       * (e.g. "Mules & Slides" → "mules_&_slides") to match the nav's slug-style keys.
+       */
       const counts: Record<string, number> = {}
       for (const row of rows) {
         if (!row.gender || !row.category) continue

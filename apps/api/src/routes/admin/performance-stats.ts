@@ -14,11 +14,11 @@ const performanceStatsRoute: FastifyPluginAsync = async (fastify) => {
         indexes,
         tableSize,
       ] = await Promise.all([
-        prisma.$queryRaw<any[]>(Prisma.sql`SELECT COUNT(*) as cnt FROM products`),
-        prisma.$queryRaw<any[]>(Prisma.sql`SELECT COUNT(*) as cnt FROM products WHERE visibility = 'live' AND in_stock = true`),
-        prisma.$queryRaw<any[]>(Prisma.sql`SELECT COUNT(*) as cnt FROM products WHERE gender = 'womens' AND visibility = 'live' AND in_stock = true`),
-        prisma.$queryRaw<any[]>(Prisma.sql`SELECT COUNT(*) as cnt FROM products WHERE gender = 'mens' AND visibility = 'live' AND in_stock = true`),
-        prisma.$queryRaw<any[]>(Prisma.sql`SELECT COUNT(*) as cnt FROM products WHERE best_price > 0 AND is_on_sale = true AND visibility = 'live' AND in_stock = true`),
+        prisma.$queryRaw<any[]>(Prisma.sql`SELECT COUNT(*)::int as cnt FROM products`),
+        prisma.$queryRaw<any[]>(Prisma.sql`SELECT COUNT(*)::int as cnt FROM products WHERE visibility = 'live' AND in_stock = true`),
+        prisma.$queryRaw<any[]>(Prisma.sql`SELECT COUNT(*)::int as cnt FROM products WHERE gender = 'womens' AND visibility = 'live' AND in_stock = true`),
+        prisma.$queryRaw<any[]>(Prisma.sql`SELECT COUNT(*)::int as cnt FROM products WHERE gender = 'mens' AND visibility = 'live' AND in_stock = true`),
+        prisma.$queryRaw<any[]>(Prisma.sql`SELECT COUNT(*)::int as cnt FROM products WHERE best_price > 0 AND is_on_sale = true AND visibility = 'live' AND in_stock = true`),
         prisma.$queryRaw<any[]>(Prisma.sql`SELECT indexname FROM pg_indexes WHERE tablename = 'products' ORDER BY indexname LIMIT 10`),
         prisma.$queryRaw<any[]>(Prisma.sql`SELECT pg_size_pretty(pg_total_relation_size('products')) as size`),
       ])

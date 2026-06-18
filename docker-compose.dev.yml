@@ -1,0 +1,26 @@
+# Dev override for live-reload of the admin app.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up admin
+#
+# Runs `next dev` instead of the standalone production build. The admin source is
+# bind-mounted into the container, while node_modules and .next are kept as
+# anonymous volumes so the host (which has pnpm symlinks / a prod build) does not
+# shadow what the image built.
+
+services:
+  admin:
+    build:
+      target: dev
+    command: ["pnpm", "--filter", "@shoetopia/admin", "dev"]
+    environment:
+      NODE_ENV: development
+      # Forces watchpack to poll for changes — needed when inotify events do not
+      # propagate reliably over bind mounts (some Docker setups). Harmless on Linux.
+      WATCHPACK_POLLING: "true"
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./apps/admin:/app/apps/admin
+      # Anonymous volumes preserve the image-built deps/cache under the bind mount.
+      - /app/apps/admin/node_modules
+      - /app/apps/admin/.next
+      - /app/node_modules

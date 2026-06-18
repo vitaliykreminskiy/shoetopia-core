@@ -107,10 +107,26 @@
       "Bash(/home/vitalii/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.2/skills/subagent-driven-development/scripts/review-package 4d8d69b d3db187)",
       "Read(//home/vitalii/.claude/plugins/cache/claude-plugins-official/superpowers/6.0.2/skills/requesting-code-review/**)",
       "Bash(node -e \"console.log\\('node', process.version\\); console.log\\('btoa', typeof btoa, 'atob', typeof atob, 'crypto.subtle', typeof crypto?.subtle, 'TextEncoder', typeof TextEncoder\\)\")",
-      "Bash(grep -vE '^\\\\s*$')"
+      "Bash(grep -vE '^\\\\s*$')",
+      "Bash(docker run *)",
+      "Bash(docker image *)",
+      "Bash(git push *)",
+      "Bash(git tag -a v0.3.1 -m 'v0.3.1 — admin auth fixes *)",
+      "Bash(gh run *)",
+      "Bash(echo \"EXIT=$?\")",
+      "Bash(docker rmi *)",
+      "Bash(docker volume *)",
+      "Bash(openspec list *)",
+      "Bash(openspec new *)",
+      "Bash(echo \"=== EXIT $? ===\")",
+      "Bash(openspec status *)",
+      "Bash(openspec instructions *)",
+      "Bash(perl -0pi -e 's{      // Swallow DB errors — empty list on failure\\\\.}{      /* Swallow DB errors — empty list on failure. */}g' apps/api/src/dal/providers/prisma/categories.ts)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('schema:',d['schemaName']\\); print\\('artifacts:',[\\(a['id'],a['status']\\) for a in d['artifacts']]\\); print\\('mode:',d['actionContext']['mode']\\); print\\('specs:',d['artifactPaths']['specs']['existingOutputPaths']\\); print\\('changesDir:',d['planningHome']['changesDir']\\); print\\('changeRoot:',d['changeRoot']\\)\")"
     ],
     "additionalDirectories": [
-      "/home/vitalii/programming/shoetopia-core/.git/sdd"
+      "/home/vitalii/programming/shoetopia-core/.git/sdd",
+      "/tmp"
     ]
   }
 }

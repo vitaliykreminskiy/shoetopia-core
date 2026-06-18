@@ -3,9 +3,12 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { DailySyncWidget } from "./daily-sync-widget";
+import { TableSkeleton } from "@/components/table-skeleton";
+import { StatCardSkeleton } from "@/components/stat-card-skeleton";
 
 export default function StatusPage() {
   const [status, setStatus] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [reprocessing, setReprocessing] = useState(false);
   const [reprocessRunId, setReprocessRunId] = useState<string | null>(null);
 
@@ -14,12 +17,15 @@ export default function StatusPage() {
   }, []);
 
   const refreshStatus = async () => {
+    setLoading(true);
     try {
       const res = await fetch("/api/admin/status");
       const data = await res.json();
       setStatus(data);
     } catch (e) {
       console.error(e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -93,28 +99,36 @@ export default function StatusPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-neutral-900 p-4 rounded">
-          <div className="text-neutral-400 text-sm">Total Products</div>
-          <div className="text-3xl font-bold">{status?.stats?.total || 0}</div>
-        </div>
-        <div className="bg-neutral-900 p-4 rounded">
-          <div className="text-neutral-400 text-sm">Live</div>
-          <div className="text-3xl font-bold text-green-400">
-            {status?.stats?.live || 0}
-          </div>
-        </div>
-        <div className="bg-neutral-900 p-4 rounded">
-          <div className="text-neutral-400 text-sm">Archived</div>
-          <div className="text-3xl font-bold text-orange-400">
-            {status?.stats?.archived || 0}
-          </div>
-        </div>
-        <div className="bg-neutral-900 p-4 rounded">
-          <div className="text-neutral-400 text-sm">In Stock</div>
-          <div className="text-3xl font-bold text-blue-400">
-            {status?.stats?.in_stock_count || 0}
-          </div>
-        </div>
+        {loading ? (
+          Array.from({ length: 4 }).map((_, i) => <StatCardSkeleton key={i} />)
+        ) : (
+          <>
+            <div className="bg-neutral-900 p-4 rounded">
+              <div className="text-neutral-400 text-sm">Total Products</div>
+              <div className="text-3xl font-bold">
+                {status?.stats?.total || 0}
+              </div>
+            </div>
+            <div className="bg-neutral-900 p-4 rounded">
+              <div className="text-neutral-400 text-sm">Live</div>
+              <div className="text-3xl font-bold text-green-400">
+                {status?.stats?.live || 0}
+              </div>
+            </div>
+            <div className="bg-neutral-900 p-4 rounded">
+              <div className="text-neutral-400 text-sm">Archived</div>
+              <div className="text-3xl font-bold text-orange-400">
+                {status?.stats?.archived || 0}
+              </div>
+            </div>
+            <div className="bg-neutral-900 p-4 rounded">
+              <div className="text-neutral-400 text-sm">In Stock</div>
+              <div className="text-3xl font-bold text-blue-400">
+                {status?.stats?.in_stock_count || 0}
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       {/* By Category & Gender */}
@@ -130,7 +144,10 @@ export default function StatusPage() {
                 <th className="px-4 py-2 text-right">Live</th>
               </tr>
             </thead>
-            <tbody>
+            {loading ? (
+              <TableSkeleton rows={5} cols={4} />
+            ) : (
+              <tbody>
               {status?.categoryBreakdown?.map((row: any) => (
                 <tr
                   key={`${row.category}-${row.gender}`}
@@ -144,7 +161,8 @@ export default function StatusPage() {
                   </td>
                 </tr>
               ))}
-            </tbody>
+              </tbody>
+            )}
           </table>
         </div>
       </div>
@@ -163,7 +181,10 @@ export default function StatusPage() {
                 <th className="px-4 py-2 text-left">Last Imported</th>
               </tr>
             </thead>
-            <tbody>
+            {loading ? (
+              <TableSkeleton rows={5} cols={5} />
+            ) : (
+              <tbody>
               {status?.feedStats?.map((feed: any) => (
                 <tr
                   key={feed.program_id}
@@ -184,7 +205,8 @@ export default function StatusPage() {
                   </td>
                 </tr>
               ))}
-            </tbody>
+              </tbody>
+            )}
           </table>
         </div>
       </div>

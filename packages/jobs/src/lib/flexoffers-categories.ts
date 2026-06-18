@@ -1,6 +1,8 @@
 /**
  * FlexOffers CategoryId → Shoetopia Category Mapping
- * Maps affiliate feed category IDs to our site structure
+ * Maps affiliate feed category IDs to our site structure { category, sub_category, gender? }.
+ * Lookup via mapFlexOffersCategory(id); unmapped ids fall back to the 'default' entry.
+ * Consumed by the import pipeline (lib/import-feed.ts) when ingesting FlexOffers feeds.
  */
 
 export interface CategoryMapping {

@@ -3,9 +3,13 @@ import type {
   CategoriesDAL,
   Category,
   CategoryListParams,
-  NavCategoryCount,
 } from "../../category.js";
 
+/*
+ * Shared join: attaches a live product count (computed_count) per category by aggregating
+ * the products table on category_slug. Used by findBySlug/list so callers get a fresh count
+ * rather than relying on the denormalized categories.product_count column.
+ */
 const WITH_COUNT = Prisma.sql`
   LEFT JOIN (
     SELECT category_slug, COUNT(*)::int as computed_count
@@ -39,6 +43,7 @@ export const prismaCategoriesDal: CategoriesDAL = {
       `);
       return rows[0] ? mapRow(rows[0]) : null;
     } catch {
+      /* Swallow DB errors — callers treat a missing/failed lookup the same (null). */
       return null;
     }
   },
@@ -47,6 +52,10 @@ export const prismaCategoriesDal: CategoriesDAL = {
     const { parentSlug, includeEmpty = false } = params ?? {};
     try {
       let rows: any[];
+      /*
+       * parentSlug "root" → top-level only (parent_slug IS NULL);
+       * a non-empty slug → that parent's children; omitted → all categories.
+       */
       if (parentSlug === "root") {
         rows = await prisma.$queryRaw<any[]>(Prisma.sql`
           SELECT c.*, COALESCE(p.computed_count, 0)::int as computed_product_count
@@ -72,12 +81,14 @@ export const prismaCategoriesDal: CategoriesDAL = {
         `);
       }
       const mapped = rows.map(mapRow);
+      /* Default hides empty categories — keep only those with a stored or live product count. */
       return includeEmpty
         ? mapped
         : mapped.filter(
             (c) => c.computed_product_count > 0 || c.product_count > 0,
           );
     } catch {
+      /* Swallow DB errors — return an empty list so routes can degrade gracefully. */
       return [];
     }
   },
@@ -95,25 +106,25 @@ export const prismaCategoriesDal: CategoriesDAL = {
         computed_product_count: r.product_count ?? 0,
       }));
     } catch {
+      /* Swallow DB errors — empty list on failure. */
       return [];
     }
   },
 
   async getNavCounts(country) {
     try {
-      const rows = await prisma.$queryRawUnsafe<
+      const rows = await prisma.$queryRaw<
         Array<{ gender: string; category: string; cnt: bigint }>
       >(
-        `SELECT gender, category, COUNT(*) AS cnt
+        Prisma.sql`SELECT gender, category, COUNT(*) AS cnt
          FROM products
          WHERE visibility = 'live'
            AND in_stock = true
            AND gender IS NOT NULL
            AND category IS NOT NULL
-           AND country = $1
+           AND country = ${country}
          GROUP BY gender, category
          ORDER BY gender, cnt DESC`,
-        country,
       );
       return rows.map((r) => ({
         gender: r.gender,
@@ -121,6 +132,7 @@ export const prismaCategoriesDal: CategoriesDAL = {
         count: Number(r.cnt),
       }));
     } catch {
+      /* Swallow DB errors — empty list on failure. */
       return [];
     }
   },

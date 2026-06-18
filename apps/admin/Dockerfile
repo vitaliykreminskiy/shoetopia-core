@@ -13,6 +13,19 @@ COPY --from=deps /app ./
 COPY . .
 RUN pnpm --filter @shoetopia/admin build
 
+# Dev stage: runs `next dev` with hot-reload. Source is bind-mounted at runtime
+# (see docker-compose.dev.yml), so only deps and the shared package are baked in.
+FROM node:22-alpine AS dev
+WORKDIR /app
+ENV NODE_ENV=development
+ENV PORT=3002
+RUN npm install -g pnpm@10
+COPY --from=deps /app ./
+COPY . .
+RUN pnpm --filter @shoetopia/shared build
+EXPOSE 3002
+CMD ["pnpm", "--filter", "@shoetopia/admin", "dev"]
+
 FROM node:22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
