@@ -122,7 +122,19 @@
       "Bash(openspec status *)",
       "Bash(openspec instructions *)",
       "Bash(perl -0pi -e 's{      // Swallow DB errors — empty list on failure\\\\.}{      /* Swallow DB errors — empty list on failure. */}g' apps/api/src/dal/providers/prisma/categories.ts)",
-      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('schema:',d['schemaName']\\); print\\('artifacts:',[\\(a['id'],a['status']\\) for a in d['artifacts']]\\); print\\('mode:',d['actionContext']['mode']\\); print\\('specs:',d['artifactPaths']['specs']['existingOutputPaths']\\); print\\('changesDir:',d['planningHome']['changesDir']\\); print\\('changeRoot:',d['changeRoot']\\)\")"
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('schema:',d['schemaName']\\); print\\('artifacts:',[\\(a['id'],a['status']\\) for a in d['artifacts']]\\); print\\('mode:',d['actionContext']['mode']\\); print\\('specs:',d['artifactPaths']['specs']['existingOutputPaths']\\); print\\('changesDir:',d['planningHome']['changesDir']\\); print\\('changeRoot:',d['changeRoot']\\)\")",
+      "Bash(grep -iE 'dump|\\\\.sql|shoetopia$')",
+      "Bash(grep -nE 'shoetopia\\(\\\\.dump\\)?$|\\\\.dump' .gitignore)",
+      "Bash(git rm *)",
+      "Bash(git reflog *)",
+      "Bash(git gc *)",
+      "Bash(npx vitest *)",
+      "Bash(PORT=3099 timeout 20 npx tsx src/main.ts)",
+      "Bash(curl -s -o /dev/null http://localhost:3099/health/live)",
+      "Bash(break)",
+      "Bash(curl -s -w \"\\\\nHTTP %{http_code}\\\\n\" http://localhost:3099/health/live)",
+      "Bash(curl -s -w \"\\\\nHTTP %{http_code}\\\\n\" http://localhost:3099/health)",
+      "Bash(sed -i 's/- \\\\[ \\\\]/- [x]/g' openspec/changes/public-api-health-check/tasks.md)"
     ],
     "additionalDirectories": [
       "/home/vitalii/programming/shoetopia-core/.git/sdd",

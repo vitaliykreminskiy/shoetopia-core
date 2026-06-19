@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify'
+import healthRoute from './health.js'
 import productsRoute from './products.js'
 import searchRoute from './search.js'
 import brandsRoute from './brands.js'
@@ -34,6 +35,7 @@ import priceDiagRoute from './admin/price-diag.js'
 import dailySyncRoute from './cron/daily-sync.js'
 
 export async function registerRoutes(fastify: FastifyInstance): Promise<void> {
+  await fastify.register(healthRoute)
   await fastify.register(productsRoute)
   await fastify.register(searchRoute)
   await fastify.register(brandsRoute)

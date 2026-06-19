@@ -19,8 +19,6 @@ await server.register(cors, { origin: true });
 await server.register(redisPlugin);
 await server.register(bullBoardPlugin);
 
-server.get("/health", async () => ({ ok: true }));
-
 await registerRoutes(server);
 
 const port = Number(process.env.PORT ?? 3001);
