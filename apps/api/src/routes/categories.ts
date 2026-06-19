@@ -2,6 +2,7 @@ import type { FastifyPluginAsync } from 'fastify'
 import { cached, CACHE_TTL } from '../lib/cache.js'
 import { DEFAULT_COUNTRY, isValidCountry } from '../lib/countries.js'
 import { getDataProvider } from '../dal/index.js'
+import { ParamError, toInt, requireStr } from '../lib/params.js'
 
 /*
  * Public categories API.
@@ -67,6 +68,38 @@ const categoriesRoute: FastifyPluginAsync = async (fastify) => {
     } catch (error) {
       fastify.log.error({ error }, '[nav-categories] error')
       return reply.send({ counts: {} })
+    }
+  })
+
+  const fail = (reply: any, err: unknown, scope: string) => {
+    if (err instanceof ParamError) return reply.code(400).send({ error: err.message })
+    fastify.log.error({ err }, `[${scope}] error`)
+    return reply.code(500).send({ error: 'Failed' })
+  }
+
+  // GET /api/categories/children?parentSlug=&minProductCount=
+  // Static path — registered before /by-slug/:slug to avoid param capture.
+  fastify.get<{ Querystring: { parentSlug?: string; minProductCount?: string } }>('/api/categories/children', async (request, reply) => {
+    try {
+      const parentSlug = requireStr(request.query.parentSlug, 'parentSlug')
+      const minProductCount = toInt(request.query.minProductCount)
+      const dal = getDataProvider()
+      return reply.send(await dal.categories.listChildren(parentSlug, minProductCount))
+    } catch (err) {
+      return fail(reply, err, 'categories/children')
+    }
+  })
+
+  // GET /api/categories/by-slug/:slug — 404 when not found
+  fastify.get<{ Params: { slug: string } }>('/api/categories/by-slug/:slug', async (request, reply) => {
+    try {
+      const slug = requireStr(request.params.slug, 'slug')
+      const dal = getDataProvider()
+      const category = await dal.categories.findBySlug(slug)
+      if (!category) return reply.code(404).send({ error: 'Category not found' })
+      return reply.send(category)
+    } catch (err) {
+      return fail(reply, err, 'categories/by-slug')
     }
   })
 }

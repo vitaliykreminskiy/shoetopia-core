@@ -137,7 +137,16 @@
       "Bash(sed -i 's/- \\\\[ \\\\]/- [x]/g' openspec/changes/public-api-health-check/tasks.md)",
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('schema:',d['schemaName']\\); print\\('mode:',d['actionContext']['mode']\\); print\\('artifacts:',[\\(a['id'],a['status']\\) for a in d['artifacts']]\\); print\\('specs paths:',d['artifactPaths']['specs']['existingOutputPaths']\\); print\\('changesDir:',d['planningHome']['changesDir']\\); print\\('changeRoot:',d['changeRoot']\\)\")",
       "Bash(openspec validate *)",
-      "Bash(openspec spec *)"
+      "Bash(openspec spec *)",
+      "Bash(python3 -c \"import json,sys;d=json.load\\(sys.stdin\\);print\\('applyRequires',d['applyRequires']\\);print\\([\\(a['id'],a['status']\\) for a in d['artifacts']]\\)\")",
+      "Bash(cd /home/vitalii/programming && ls -d shoetopia 2>&1 && echo \"=== exists ===\" && ls shoetopia | head)",
+      "Read(//home/vitalii/programming/**)",
+      "Bash(grep -rhoE \"/api/[a-zA-Z0-9/:?{}._\\\\$-]+\" app components lib dal)",
+      "Bash(grep -rhnE \"\\(get|post|request|client\\)[^\\\\n]*['\\\\\"\\\\`]/[a-zA-Z]\" .)",
+      "Bash(grep -oE \"['\\\\\"\\\\`]/[^'\\\\\"\\\\`]+['\\\\\"\\\\`]\")",
+      "Bash(/\" client.ts | head -30)",
+      "Bash(grep -nE \"client\\\\.|request|/api|=>|async|get<|buildPath|path|`/\" client.ts | head -30)",
+      "Bash(python3 -c \"import json,sys;d=json.load\\(sys.stdin\\);print\\('mode:',d['actionContext']['mode']\\);print\\('artifacts:',[\\(a['id'],a['status']\\) for a in d['artifacts']]\\);print\\('specs:',d['artifactPaths']['specs']['existingOutputPaths']\\)\")"
     ],
     "additionalDirectories": [
       "/home/vitalii/programming/shoetopia-core/.git/sdd",

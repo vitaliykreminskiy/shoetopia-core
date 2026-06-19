@@ -31,6 +31,7 @@ export const requireApiSecret = async (
       request.log.error(
         "[auth] API_SECRET is not configured — rejecting request (fail closed)",
       );
+      console.log(">> SECRET", apiSecret);
       reply.code(401).send({ error: "Unauthorized" });
     }
     return; // non-production: allow, to keep local dev frictionless

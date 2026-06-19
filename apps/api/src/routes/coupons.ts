@@ -1,6 +1,7 @@
 import type { FastifyPluginAsync } from 'fastify'
 import { getCoupons, getPromotions } from '../lib/flexoffers.js'
 import { getDataProvider } from '../dal/index.js'
+import { ParamError, toInt, requireStr } from '../lib/params.js'
 
 const couponsRoute: FastifyPluginAsync = async (fastify) => {
   // GET /api/coupons — list coupons/promotions
@@ -65,6 +66,71 @@ const couponsRoute: FastifyPluginAsync = async (fastify) => {
     } catch (e) {
       fastify.log.error({ e }, '[coupon-stores]')
       return reply.send([])
+    }
+  })
+
+  const fail = (reply: any, err: unknown, scope: string) => {
+    if (err instanceof ParamError) return reply.code(400).send({ error: err.message })
+    fastify.log.error({ err }, `[${scope}] error`)
+    return reply.code(500).send({ error: 'Failed' })
+  }
+
+  // GET /api/coupons/stores/related?excludeId= — static, before /stores/:slug
+  fastify.get<{ Querystring: { excludeId?: string } }>('/api/coupons/stores/related', async (request, reply) => {
+    try {
+      const excludeId = toInt(request.query.excludeId, { required: true })!
+      const dal = getDataProvider()
+      return reply.send(await dal.coupons.getRelatedStores(excludeId))
+    } catch (err) {
+      return fail(reply, err, 'coupons/stores/related')
+    }
+  })
+
+  // GET /api/coupons/stores/:store/products — :store is a numeric advertiser id.
+  // The param is named :store consistently across all /stores/:store* routes
+  // because find-my-way forbids differing param names at the same position.
+  fastify.get<{ Params: { store: string } }>('/api/coupons/stores/:store/products', async (request, reply) => {
+    try {
+      const advertiserId = toInt(request.params.store, { required: true })!
+      const dal = getDataProvider()
+      return reply.send(await dal.coupons.getStoreProducts(advertiserId))
+    } catch (err) {
+      return fail(reply, err, 'coupons/stores/products')
+    }
+  })
+
+  // GET /api/coupons/stores/:store/keywords — :store is a numeric advertiser id
+  fastify.get<{ Params: { store: string } }>('/api/coupons/stores/:store/keywords', async (request, reply) => {
+    try {
+      const advertiserId = toInt(request.params.store, { required: true })!
+      const dal = getDataProvider()
+      return reply.send(await dal.coupons.getStoreKeywords(advertiserId))
+    } catch (err) {
+      return fail(reply, err, 'coupons/stores/keywords')
+    }
+  })
+
+  // GET /api/coupons/stores/:store — :store is a slug here. 404 when not found.
+  fastify.get<{ Params: { store: string } }>('/api/coupons/stores/:store', async (request, reply) => {
+    try {
+      const slug = requireStr(request.params.store, 'slug')
+      const dal = getDataProvider()
+      const store = await dal.coupons.findStoreBySlug(slug)
+      if (!store) return reply.code(404).send({ error: 'Store not found' })
+      return reply.send(store)
+    } catch (err) {
+      return fail(reply, err, 'coupons/stores/:store')
+    }
+  })
+
+  // GET /api/coupons/by-advertiser/:advertiserId
+  fastify.get<{ Params: { advertiserId: string } }>('/api/coupons/by-advertiser/:advertiserId', async (request, reply) => {
+    try {
+      const advertiserId = toInt(request.params.advertiserId, { required: true })!
+      const dal = getDataProvider()
+      return reply.send(await dal.coupons.listByAdvertiser(advertiserId))
+    } catch (err) {
+      return fail(reply, err, 'coupons/by-advertiser')
     }
   })
 }

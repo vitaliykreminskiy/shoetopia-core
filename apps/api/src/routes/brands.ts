@@ -2,6 +2,7 @@ import type { FastifyPluginAsync } from 'fastify'
 import { cached, CACHE_TTL } from '../lib/cache.js'
 import { DEFAULT_COUNTRY, isValidCountry } from '../lib/countries.js'
 import { getDataProvider } from '../dal/index.js'
+import { ParamError, toInt } from '../lib/params.js'
 
 const DESIGNER_BRANDS = [
   { name: 'Christian Louboutin', tier: 'luxury' },
@@ -81,6 +82,20 @@ const brandsRoute: FastifyPluginAsync = async (fastify) => {
     } catch (error) {
       fastify.log.error({ error }, '[designer-brands] error')
       return reply.code(500).send({ brands: [] })
+    }
+  })
+
+  // GET /api/brands/sitemap?minCount= — brands for sitemap generation
+  fastify.get<{ Querystring: { minCount?: string } }>('/api/brands/sitemap', async (request, reply) => {
+    try {
+      const minCount = toInt(request.query.minCount, { default: 10 })!
+      const dal = getDataProvider()
+      const rows = await cached(`brands:sitemap:${minCount}`, () => dal.brands.getTopForSitemap(minCount), CACHE_TTL.LONG)
+      return reply.send(rows)
+    } catch (err) {
+      if (err instanceof ParamError) return reply.code(400).send({ error: err.message })
+      fastify.log.error({ err }, '[brands/sitemap] error')
+      return reply.code(500).send({ error: 'Failed' })
     }
   })
 }

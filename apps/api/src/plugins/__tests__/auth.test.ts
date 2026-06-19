@@ -9,8 +9,8 @@ const SECRET = "s3cr3t-token";
 const buildApp = async () => {
   const app = Fastify();
   registerAuth(app);
-  app.get("/health", async () => ({ status: "ok" }));
-  app.get("/health/live", async () => ({ status: "ok" }));
+  app.get("/api/health", async () => ({ status: "ok" }));
+  app.get("/api/health/live", async () => ({ status: "ok" }));
   app.get("/api/products", async () => ({ products: [] }));
   await app.ready();
   return app;
@@ -65,10 +65,10 @@ describe("global bearer auth", () => {
     await app.close();
   });
 
-  it("allows /health and /health/live without a token", async () => {
+  it("allows /api/health and /api/health/live without a token", async () => {
     vi.stubEnv("API_SECRET", SECRET);
     const app = await buildApp();
-    for (const url of ["/health", "/health/live"]) {
+    for (const url of ["/api/health", "/api/health/live"]) {
       const res = await app.inject({ method: "GET", url });
       expect(res.statusCode).toBe(200);
     }
@@ -78,8 +78,8 @@ describe("global bearer auth", () => {
   it("does not allowlist a query-suffixed health path twin", async () => {
     vi.stubEnv("API_SECRET", SECRET);
     const app = await buildApp();
-    // /health?x=1 still resolves to the public /health route (query stripped).
-    const res = await app.inject({ method: "GET", url: "/health?x=1" });
+    // /api/health?x=1 still resolves to the public route (query stripped).
+    const res = await app.inject({ method: "GET", url: "/api/health?x=1" });
     expect(res.statusCode).toBe(200);
     await app.close();
   });
