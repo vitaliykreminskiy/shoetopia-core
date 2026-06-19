@@ -1,10 +1,9 @@
 import type { FastifyPluginAsync } from 'fastify'
-import { requireApiSecret } from '../../plugins/auth.js'
 import { importFeedById, feedImportQueue, feedImportQueueEvents } from '@shoetopia/jobs'
 import { prisma } from '@shoetopia/db'
 
 const importRoute: FastifyPluginAsync = async (fastify) => {
-  fastify.get('/api/admin/run-pipeline', { preHandler: requireApiSecret }, async (_request, reply) => {
+  fastify.get('/api/admin/run-pipeline', async (_request, reply) => {
     const feeds = await prisma.feed.findMany({
       where: { isActive: true },
       select: { programId: true, programName: true },
@@ -23,7 +22,6 @@ const importRoute: FastifyPluginAsync = async (fastify) => {
 
   fastify.post<{ Body: { action?: string; feedId?: number } }>(
     '/api/admin/run-pipeline',
-    { preHandler: requireApiSecret },
     async (request, reply) => {
       try {
         const { action, feedId } = request.body ?? {}
@@ -93,7 +91,6 @@ const importRoute: FastifyPluginAsync = async (fastify) => {
   // Direct import endpoint — enqueues a BullMQ job and waits for completion
   fastify.post<{ Body: { feedId?: number } }>(
     '/api/admin/import',
-    { preHandler: requireApiSecret },
     async (request, reply) => {
       try {
         const { feedId } = request.body ?? {}

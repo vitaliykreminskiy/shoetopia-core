@@ -1,9 +1,8 @@
 import type { FastifyPluginAsync } from 'fastify'
-import { requireApiSecret } from '../../plugins/auth.js'
 import { prisma, Prisma } from '@shoetopia/db'
 
 const priceDiagRoute: FastifyPluginAsync = async (fastify) => {
-  fastify.get('/api/admin/price-diag', { preHandler: requireApiSecret }, async (_request, reply) => {
+  fastify.get('/api/admin/price-diag', async (_request, reply) => {
     const [summary, samples, topDiscount] = await Promise.all([
       prisma.$queryRaw<any[]>(Prisma.sql`
         SELECT

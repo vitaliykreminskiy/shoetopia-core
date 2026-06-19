@@ -30,7 +30,7 @@ describe('health endpoints', () => {
 
   it('GET /health/live returns 200 ok with no auth', async () => {
     const app = await buildApp(null)
-    const res = await app.inject({ method: 'GET', url: '/health/live' })
+    const res = await app.inject({ method: 'GET', url: '/api/health/live' })
     expect(res.statusCode).toBe(200)
     expect(JSON.parse(res.body)).toEqual({ status: 'ok' })
     await app.close()
@@ -41,7 +41,7 @@ describe('health endpoints', () => {
     const redis = { ping: vi.fn().mockResolvedValue('PONG') }
     const app = await buildApp(redis)
 
-    const res = await app.inject({ method: 'GET', url: '/health' })
+    const res = await app.inject({ method: 'GET', url: '/api/health' })
     expect(res.statusCode).toBe(200)
     expect(JSON.parse(res.body)).toEqual({
       status: 'ok',
@@ -55,7 +55,7 @@ describe('health endpoints', () => {
     const redis = { ping: vi.fn().mockResolvedValue('PONG') }
     const app = await buildApp(redis)
 
-    const res = await app.inject({ method: 'GET', url: '/health' })
+    const res = await app.inject({ method: 'GET', url: '/api/health' })
     expect(res.statusCode).toBe(503)
     const body = JSON.parse(res.body)
     expect(body.status).toBe('error')
@@ -67,7 +67,7 @@ describe('health endpoints', () => {
     queryRaw.mockResolvedValue([{ '?column?': 1 }])
     const app = await buildApp(null)
 
-    const res = await app.inject({ method: 'GET', url: '/health' })
+    const res = await app.inject({ method: 'GET', url: '/api/health' })
     expect(res.statusCode).toBe(200)
     expect(JSON.parse(res.body)).toEqual({
       status: 'ok',
@@ -80,7 +80,7 @@ describe('health endpoints', () => {
     queryRaw.mockRejectedValue(new Error('secret connection string leaked'))
     const app = await buildApp(null)
 
-    const res = await app.inject({ method: 'GET', url: '/health' })
+    const res = await app.inject({ method: 'GET', url: '/api/health' })
     expect(res.statusCode).not.toBe(401)
     const raw = res.body
     expect(raw).not.toContain('secret connection string')

@@ -1,11 +1,10 @@
 import type { FastifyPluginAsync } from 'fastify'
-import { requireApiSecret } from '../../plugins/auth.js'
 import { prisma, Prisma } from '@shoetopia/db'
 import { upsertGroups, regroupStep } from '@shoetopia/jobs'
 
 const housekeepingRoute: FastifyPluginAsync = async (fastify) => {
   // GET /api/admin/housekeeping/group-products — status
-  fastify.get('/api/admin/housekeeping/group-products', { preHandler: requireApiSecret }, async (_request, reply) => {
+  fastify.get('/api/admin/housekeeping/group-products', async (_request, reply) => {
     try {
       const count = await prisma.$queryRaw<any[]>(Prisma.sql`
         SELECT COUNT(*)::int AS cnt FROM products WHERE visibility = 'live'
@@ -21,7 +20,7 @@ const housekeepingRoute: FastifyPluginAsync = async (fastify) => {
   })
 
   // POST /api/admin/housekeeping/group-products — run grouping
-  fastify.post('/api/admin/housekeeping/group-products', { preHandler: requireApiSecret }, async (_request, reply) => {
+  fastify.post('/api/admin/housekeeping/group-products', async (_request, reply) => {
     try {
       fastify.log.info('[grouping] Starting upsertGroups + regroupStep')
       const startTime = Date.now()
@@ -40,7 +39,7 @@ const housekeepingRoute: FastifyPluginAsync = async (fastify) => {
   })
 
   // POST /api/admin/housekeeping/regroup — stub (regroup workflow)
-  fastify.post('/api/admin/housekeeping/regroup', { preHandler: requireApiSecret }, async (_request, reply) => {
+  fastify.post('/api/admin/housekeeping/regroup', async (_request, reply) => {
     try {
       // Regroup workflow — in shoetopia this used a workflow SDK.
       // For now run the regroup step directly.

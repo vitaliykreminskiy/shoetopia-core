@@ -2,6 +2,7 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import redisPlugin from "./plugins/redis.js";
 import bullBoardPlugin from "./plugins/bull-board.js";
+import { registerAuth } from "./plugins/auth.js";
 import { registerRoutes } from "./routes/index.js";
 import { prisma } from "@shoetopia/db";
 
@@ -17,8 +18,25 @@ const server = Fastify({
 
 await server.register(cors, { origin: true });
 await server.register(redisPlugin);
-await server.register(bullBoardPlugin);
 
+// Global Bearer auth — registered before any route-bearing plugin so the
+// onRequest hook covers every route (a Fastify hook only applies to routes
+// registered after it). This includes the bull-board UI at /bull.
+registerAuth(server);
+
+if (!process.env.API_SECRET) {
+  if (process.env.NODE_ENV === "production") {
+    server.log.error(
+      "[auth] API_SECRET is not set in production — all non-public routes will return 401 (fail closed)",
+    );
+  } else {
+    server.log.warn(
+      "[auth] API_SECRET is not set — authentication is disabled (non-production only)",
+    );
+  }
+}
+
+await server.register(bullBoardPlugin);
 await registerRoutes(server);
 
 const port = Number(process.env.PORT ?? 3001);

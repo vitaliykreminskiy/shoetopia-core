@@ -1,5 +1,4 @@
 import type { FastifyPluginAsync } from 'fastify'
-import { requireApiSecret } from '../../plugins/auth.js'
 import { Redis } from 'ioredis'
 
 let redis: Redis | null = null
@@ -31,7 +30,7 @@ async function clearCache(): Promise<{ success: boolean; cleared: number; error?
 }
 
 const clearCacheRoute: FastifyPluginAsync = async (fastify) => {
-  fastify.post('/api/admin/clear-cache', { preHandler: requireApiSecret }, async (_request, reply) => {
+  fastify.post('/api/admin/clear-cache', async (_request, reply) => {
     try {
       const result = await clearCache()
       return reply.code(result.success ? 200 : 500).send(result)
@@ -41,7 +40,7 @@ const clearCacheRoute: FastifyPluginAsync = async (fastify) => {
     }
   })
 
-  fastify.get('/api/admin/clear-cache', { preHandler: requireApiSecret }, async (_request, reply) => {
+  fastify.get('/api/admin/clear-cache', async (_request, reply) => {
     try {
       const result = await clearCache()
       return reply.send(result)

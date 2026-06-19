@@ -8,7 +8,6 @@ import {
   housekeepingQueue,
   syncQueue,
 } from "@shoetopia/jobs";
-import { requireApiSecret } from "./auth.js";
 
 export default fp(async (fastify: FastifyInstance) => {
   const serverAdapter = new FastifyAdapter();
@@ -24,14 +23,10 @@ export default fp(async (fastify: FastifyInstance) => {
 
   serverAdapter.setBasePath("/bull");
 
-  // if (process.env.DEV === "development") {
-  //   fastify.addHook("onRequest", async (request, reply) => {
-  //     if (request.url.startsWith("/bull")) {
-  //       await requireApiSecret(request, reply);
-  //     }
-  //   });
-  // }
-
+  // Auth decision: /bull is NOT on the public allowlist, so the global Bearer
+  // hook (registered before this plugin in server.ts) protects it with the same
+  // API_SECRET. Browser access therefore requires sending the Bearer token
+  // (e.g. via a reverse proxy that injects it), which is the intended posture.
   await fastify.register(serverAdapter.registerPlugin(), { prefix: "/bull" });
   fastify.log.info("[bull-board] UI available at /bull");
 });

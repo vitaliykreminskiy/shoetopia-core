@@ -1,12 +1,10 @@
 import type { FastifyPluginAsync } from "fastify";
-import { requireApiSecret } from "../../plugins/auth.js";
 import { syncQueue } from "@shoetopia/jobs";
 import { randomUUID } from "crypto";
 
 const dailySyncRoute: FastifyPluginAsync = async (fastify) => {
   fastify.post(
     "/api/cron/daily-sync",
-    { preHandler: requireApiSecret },
     async (_request, reply) => {
       const runId = randomUUID();
       const runStartedAt = new Date().toISOString();

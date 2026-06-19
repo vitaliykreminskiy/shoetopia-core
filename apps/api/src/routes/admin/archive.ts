@@ -1,11 +1,10 @@
 import type { FastifyPluginAsync } from 'fastify'
-import { requireApiSecret } from '../../plugins/auth.js'
 import { prisma, Prisma, rawQuery } from '@shoetopia/db'
 
 const archiveRoute: FastifyPluginAsync = async (fastify) => {
   fastify.get<{
     Querystring: { visibility?: string; limit?: string; offset?: string }
-  }>('/api/admin/archive', { preHandler: requireApiSecret }, async (request, reply) => {
+  }>('/api/admin/archive', async (request, reply) => {
     try {
       const { visibility = 'archived', limit: limitStr = '50', offset: offsetStr = '0' } = request.query
       const limit = parseInt(limitStr)
@@ -38,7 +37,6 @@ const archiveRoute: FastifyPluginAsync = async (fastify) => {
 
   fastify.post<{ Body: { action?: string; productIds?: number[] } }>(
     '/api/admin/archive',
-    { preHandler: requireApiSecret },
     async (request, reply) => {
       try {
         const { action, productIds } = request.body ?? {}

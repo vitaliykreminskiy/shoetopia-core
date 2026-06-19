@@ -1,11 +1,9 @@
 import type { FastifyPluginAsync } from "fastify";
-import { requireApiSecret } from "../../plugins/auth.js";
 import { prisma, Prisma } from "@shoetopia/db";
 
 const statusRoute: FastifyPluginAsync = async (fastify) => {
   fastify.get(
     "/api/admin/status",
-    { preHandler: requireApiSecret },
     async (_request, reply) => {
       try {
         const [stats, categoryBreakdown, productCounts] = await Promise.all([

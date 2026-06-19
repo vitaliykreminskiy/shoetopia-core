@@ -1,5 +1,4 @@
 import type { FastifyPluginAsync } from 'fastify'
-import { requireApiSecret } from '../../plugins/auth.js'
 import { prisma, Prisma } from '@shoetopia/db'
 
 function parseCSVLine(line: string): string[] {
@@ -23,7 +22,7 @@ function parseCSVLine(line: string): string[] {
 }
 
 const feedsAdminRoute: FastifyPluginAsync = async (fastify) => {
-  fastify.get('/api/admin/import-feeds', { preHandler: requireApiSecret }, async (_request, reply) => {
+  fastify.get('/api/admin/import-feeds', async (_request, reply) => {
     try {
       const [feeds, stats] = await Promise.all([
         prisma.$queryRaw<any[]>(Prisma.sql`
@@ -68,7 +67,6 @@ const feedsAdminRoute: FastifyPluginAsync = async (fastify) => {
 
   fastify.post<{ Body: unknown }>(
     '/api/admin/import-feeds',
-    { preHandler: requireApiSecret },
     async (request, reply) => {
       try {
         // Multipart form data handling — body is raw text from CSV upload

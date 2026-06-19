@@ -1,12 +1,11 @@
 import type { FastifyPluginAsync } from 'fastify'
-import { requireApiSecret } from '../../plugins/auth.js'
 import { prisma, Prisma } from '@shoetopia/db'
 import { normalizeProductName, generateParentSlug, upsertGroups, wireGroupIds, regroupStep, hideProducts } from '@shoetopia/jobs'
 
 const BATCH_SIZE = 500
 
 const renormalizeRoute: FastifyPluginAsync = async (fastify) => {
-  fastify.get('/api/admin/renormalize', { preHandler: requireApiSecret }, async (_request, reply) => {
+  fastify.get('/api/admin/renormalize', async (_request, reply) => {
     const feedList = await prisma.feed.findMany({
       where: { isActive: true },
       select: { programId: true, programName: true, country: true },
@@ -25,7 +24,7 @@ const renormalizeRoute: FastifyPluginAsync = async (fastify) => {
 
   fastify.post<{
     Body: { programId?: number; preview?: boolean; phase?: '1' | '1b' | '2' }
-  }>('/api/admin/renormalize', { preHandler: requireApiSecret }, async (request, reply) => {
+  }>('/api/admin/renormalize', async (request, reply) => {
     const started = Date.now()
     const { programId, preview = false, phase } = request.body ?? {}
     const feed = programId != null

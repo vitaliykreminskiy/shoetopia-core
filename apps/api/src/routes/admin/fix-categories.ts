@@ -1,16 +1,15 @@
 import type { FastifyPluginAsync } from 'fastify'
-import { requireApiSecret } from '../../plugins/auth.js'
 import { prisma, Prisma } from '@shoetopia/db'
 
 /*
- * POST /api/admin/fix-categories — admin-secret maintenance job (requireApiSecret).
+ * POST /api/admin/fix-categories — admin maintenance job (auth enforced by the global Bearer hook).
  * Rewrites variants.category / variants.sub_category in bulk via raw UPDATEs to clean up
  * mis-categorized live, in-stock products. ORDER MATTERS and the job is NOT idempotent-safe to
  * reorder: wedge-sandals run before pure-wedges before sandals/heels/etc., so each later rule
  * only touches rows the earlier, more-specific rules left alone. Returns { success, logs, stats }.
  */
 const fixCategoriesRoute: FastifyPluginAsync = async (fastify) => {
-  fastify.post('/api/admin/fix-categories', { preHandler: requireApiSecret }, async (_request, reply) => {
+  fastify.post('/api/admin/fix-categories', async (_request, reply) => {
     const logs: string[] = []
 
     try {

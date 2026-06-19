@@ -1,9 +1,8 @@
 import type { FastifyPluginAsync } from 'fastify'
-import { requireApiSecret } from '../../plugins/auth.js'
 import { feedImportQueue, housekeepingQueue, syncQueue } from '@shoetopia/jobs'
 
 const jobsRoute: FastifyPluginAsync = async (fastify) => {
-  fastify.get('/api/admin/jobs', { preHandler: requireApiSecret }, async (_request, reply) => {
+  fastify.get('/api/admin/jobs', async (_request, reply) => {
     const queues = [
       { name: 'feed-import', q: feedImportQueue },
       { name: 'housekeeping', q: housekeepingQueue },
@@ -61,7 +60,6 @@ const jobsRoute: FastifyPluginAsync = async (fastify) => {
 
   fastify.get<{ Params: { queue: string; jobId: string } }>(
     '/api/admin/jobs/:queue/:jobId/logs',
-    { preHandler: requireApiSecret },
     async (request, reply) => {
       const { queue, jobId } = request.params
       if (!['feed-import', 'housekeeping', 'sync'].includes(queue)) {
@@ -79,7 +77,6 @@ const jobsRoute: FastifyPluginAsync = async (fastify) => {
 
   fastify.post<{ Body: { jobId: string; queue: string } }>(
     '/api/admin/jobs/retry',
-    { preHandler: requireApiSecret },
     async (request, reply) => {
       const { jobId, queue } = request.body
       const q = queue === 'feed-import' ? feedImportQueue
@@ -94,7 +91,6 @@ const jobsRoute: FastifyPluginAsync = async (fastify) => {
 
   fastify.post<{ Body: { jobId: string; queue: string } }>(
     '/api/admin/jobs/pause',
-    { preHandler: requireApiSecret },
     async (request, reply) => {
       const { queue } = request.body
       if (!['feed-import', 'housekeeping', 'sync'].includes(queue)) {
@@ -110,7 +106,6 @@ const jobsRoute: FastifyPluginAsync = async (fastify) => {
 
   fastify.post<{ Body: { queue: string } }>(
     '/api/admin/jobs/resume',
-    { preHandler: requireApiSecret },
     async (request, reply) => {
       const { queue } = request.body
       if (!['feed-import', 'housekeeping', 'sync'].includes(queue)) {
@@ -126,7 +121,6 @@ const jobsRoute: FastifyPluginAsync = async (fastify) => {
 
   fastify.post<{ Body: { jobId: string; queue: string } }>(
     '/api/admin/jobs/remove',
-    { preHandler: requireApiSecret },
     async (request, reply) => {
       const { jobId, queue } = request.body
       if (!['feed-import', 'housekeeping', 'sync'].includes(queue)) {

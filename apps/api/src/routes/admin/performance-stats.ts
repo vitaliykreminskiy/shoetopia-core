@@ -1,9 +1,8 @@
 import type { FastifyPluginAsync } from 'fastify'
-import { requireApiSecret } from '../../plugins/auth.js'
 import { prisma, Prisma } from '@shoetopia/db'
 
 const performanceStatsRoute: FastifyPluginAsync = async (fastify) => {
-  fastify.get('/api/admin/performance-stats', { preHandler: requireApiSecret }, async (_request, reply) => {
+  fastify.get('/api/admin/performance-stats', async (_request, reply) => {
     try {
       const [
         totalProducts,

@@ -29,10 +29,10 @@ const probe = async (
 
 const healthRoute: FastifyPluginAsync = async (fastify) => {
   // Liveness: process is up. No dependency probes — cheap, for high-frequency polling.
-  fastify.get('/health/live', async () => ({ status: 'ok' }))
+  fastify.get('/api/health/live', async () => ({ status: 'ok' }))
 
   // Readiness: probe the public API's runtime dependencies (DB + Redis).
-  fastify.get('/health', async (_request, reply) => {
+  fastify.get('/api/health', async (_request, reply) => {
     const databaseProbe = probe('database', fastify.log, async () => {
       await prisma.$queryRaw`SELECT 1`
     })

@@ -1,9 +1,8 @@
 import type { FastifyPluginAsync } from 'fastify'
-import { requireApiSecret } from '../../plugins/auth.js'
 import { prisma, Prisma } from '@shoetopia/db'
 
 const syncLogRoute: FastifyPluginAsync = async (fastify) => {
-  fastify.get('/api/admin/sync-log', { preHandler: requireApiSecret }, async (_request, reply) => {
+  fastify.get('/api/admin/sync-log', async (_request, reply) => {
     try {
       const rows = await prisma.$queryRaw<any[]>(Prisma.sql`
         SELECT
