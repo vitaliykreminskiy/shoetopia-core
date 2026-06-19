@@ -134,7 +134,10 @@
       "Bash(break)",
       "Bash(curl -s -w \"\\\\nHTTP %{http_code}\\\\n\" http://localhost:3099/health/live)",
       "Bash(curl -s -w \"\\\\nHTTP %{http_code}\\\\n\" http://localhost:3099/health)",
-      "Bash(sed -i 's/- \\\\[ \\\\]/- [x]/g' openspec/changes/public-api-health-check/tasks.md)"
+      "Bash(sed -i 's/- \\\\[ \\\\]/- [x]/g' openspec/changes/public-api-health-check/tasks.md)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('schema:',d['schemaName']\\); print\\('mode:',d['actionContext']['mode']\\); print\\('artifacts:',[\\(a['id'],a['status']\\) for a in d['artifacts']]\\); print\\('specs paths:',d['artifactPaths']['specs']['existingOutputPaths']\\); print\\('changesDir:',d['planningHome']['changesDir']\\); print\\('changeRoot:',d['changeRoot']\\)\")",
+      "Bash(openspec validate *)",
+      "Bash(openspec spec *)"
     ],
     "additionalDirectories": [
       "/home/vitalii/programming/shoetopia-core/.git/sdd",
